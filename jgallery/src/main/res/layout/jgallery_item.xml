@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--<VideoView-->
+        <!--android:id="@+id/videoView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@null"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:visibility="invisible"/>-->
+    <com.soubw.photoview.PhotoView
+        android:id="@+id/photoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <!--<com.soubw.utils.JRoundProgressBar-->
+        <!--android:id="@+id/jRoundProgressBar"-->
+        <!--android:layout_width="60dp"-->
+        <!--android:layout_height="60dp"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:visibility="gone"-->
+        <!--wxj:JRoundColor="#99CCCCCC"-->
+        <!--wxj:JRoundProgressColor="@android:color/white"-->
+        <!--wxj:JRoundWidth="4dp"-->
+        <!--wxj:JRoundStyle="FILL_NO_STROKE"-->
+        <!--wxj:JRoundTextIsDisplayable="false" />-->
+</RelativeLayout>
