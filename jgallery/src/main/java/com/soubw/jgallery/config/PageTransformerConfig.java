@@ -20,7 +20,11 @@ import com.soubw.jgallery.transformer.ZoomInTransformer;
 import com.soubw.jgallery.transformer.ZoomOutSlideTransformer;
 import com.soubw.jgallery.transformer.ZoomOutTranformer;
 
-
+/**
+ * @author WX_JIN
+ * wangxiaojin@soubw.com
+ * http://soubw.com
+ */
 public class PageTransformerConfig {
     public static Class<? extends PageTransformer> Default = DefaultTransformer.class;
     public static Class<? extends PageTransformer> Accordion = AccordionTransformer.class;

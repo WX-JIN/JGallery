@@ -14,9 +14,9 @@ import com.soubw.photoview.PhotoViewAttacher;
 import java.util.List;
 
 /**
- * @author WX_JIN on 2016/9/5
- * @email wangxiaojin@soubw.com
- * @link http://soubw.com
+ * @author WX_JIN
+ * wangxiaojin@soubw.com
+ * http://soubw.com
  */
 public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAdapter.JGalleryHolder> {
 

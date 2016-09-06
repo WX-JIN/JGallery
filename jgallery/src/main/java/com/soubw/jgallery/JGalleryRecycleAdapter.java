@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.WeakHashMap;
 
 /**
- * @author WX_JIN on 2016/9/5
- * @email wangxiaojin@soubw.com
- * @link http://soubw.com
+ * @author WX_JIN
+ * wangxiaojin@soubw.com
+ * http://soubw.com
  */
 public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.ViewHolder> extends RecyclingPagerAdapter {
 

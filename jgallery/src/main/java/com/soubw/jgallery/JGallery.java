@@ -20,9 +20,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author WX_JIN on 2016/9/5
- * @email wangxiaojin@soubw.com
- * @link http://soubw.com
+ * @author WX_JIN
+ * wangxiaojin@soubw.com
+ * http://soubw.com
  */
 public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListener,JGalleryPageSelectedListener {
 
