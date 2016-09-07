@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListener, OnJGalleryPageSelectedListener {
 
-    private static final String TAG = "OnJGallery";
+    private static final String TAG = "JGallery";
 
     private ViewPager viewPager;
 
@@ -95,7 +95,7 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         setAutoPlay(typedArray.getBoolean(R.styleable.JGallery_auto_play, autoPlay));
         setReStart(typedArray.getBoolean(R.styleable.JGallery_re_start, reStart));
         typedArray.recycle();
-        startAutoPlay();
+        startAutoPlayTack(true);
     }
 
     @Override
@@ -124,10 +124,11 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
             onPageChangeListener.onPageScrollStateChanged(state);
     }
 
-    private void startAutoPlay() {
+    private void startAutoPlayTack(boolean startAutoPlayTack) {
         handler.removeCallbacks(autoPlayTack);
-        if (autoPlay)
-            handler.postDelayed(autoPlayTack, delayTime);
+        if (!startAutoPlayTack)
+            return;
+        handler.postDelayed(autoPlayTack, delayTime);
     }
 
     private final Runnable autoPlayTack = new Runnable() {
@@ -151,11 +152,11 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         if (dataCount > 1) {
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    setAutoPlay(false);
+                    startAutoPlayTack(false);
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    setAutoPlay(true);
+                    startAutoPlayTack(true);
                     break;
             }
         }
@@ -220,7 +221,7 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
 
     public void setAutoPlay(boolean ap) {
         this.autoPlay = ap;
-        startAutoPlay();
+        startAutoPlayTack(autoPlay);
     }
 
     public void setReStart(boolean rs) {
@@ -296,6 +297,10 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
             return;
         dataCount += data.size();
         jGalleryPagerAdapter.addBeforeData(data, td);
+        viewPager.removeAllViews();
+        //viewPager.setAdapter(jGalleryPagerAdapter);
+        jGalleryPagerAdapter.notifyDataSetChanged();
+        viewPager.setCurrentItem(currentPos);
     }
 
     public void addMoreData(Object[] ld) {
