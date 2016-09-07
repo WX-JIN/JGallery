@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.soubw.jgallery.config.DataType;
 import com.soubw.salvage.RecyclingPagerAdapter;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
     protected Context context;
     private final LayoutInflater inflater;
     protected List listData;
+    protected List typeData;
 
     protected WeakHashMap<Integer, VH> weakViewMap = new WeakHashMap<>();
     private boolean isFirstView = true;
@@ -34,11 +36,11 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
 
     public View getView(int position, View convertView, ViewGroup container) {
         VH holder;
-        if (convertView != null && convertView.getTag(getItemType(position)) != null) {
-            holder = (VH) convertView.getTag(getItemType(position));
+        if (convertView != null) {
+            holder = (VH) convertView.getTag(getTagId());
         } else {
-            holder = this.onCreateViewHolder(container, getItemType(position));
-            holder.view.setTag(getItemType(position), holder);
+            holder = this.onCreateViewHolder(container, position);
+            holder.view.setTag(getTagId(), holder);
         }
         this.onBindViewHolder(holder, position);
         weakViewMap.put(position, holder);
@@ -49,35 +51,44 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
         return holder.view;
     }
 
-    public void addRefreshData(List<?> data) {
-        if (data == null || data.isEmpty())
+    public void addRefreshData(List<?> ld,List<?> td) {
+        if (ld == null || ld.isEmpty())
             return;
         if (listData == null){
             listData = new ArrayList<>();
         }else {
             listData.clear();
         }
-        listData.addAll(data);
+        listData.addAll(ld);
+        if (td != null && !td.isEmpty()){
+            if (typeData == null){
+                typeData = new ArrayList<>();
+            }else {
+                typeData.clear();
+            }
+            typeData.addAll(td);
+        }
         notifyDataSetChanged();
     }
 
-    public void addMoreData(List<?> data) {
-        if (data == null || data.isEmpty()  || listData == null)
+    public void addMoreData(List<?> ld,List<?> td) {
+        if (ld == null || ld.isEmpty()  || listData == null)
             return;
-        listData.addAll(getCount(), data);
+        listData.addAll(getCount(), ld);
+        if (td != null && !td.isEmpty()){
+            typeData.addAll(td);
+        }
         notifyDataSetChanged();
     }
 
-    public void addBeforeData(List<?> data) {
-        if (data == null || data.isEmpty() || listData == null)
+    public void addBeforeData(List<?> ld,List<?> td) {
+        if (ld == null || ld.isEmpty() || listData == null)
             return;
-        listData.addAll(0, data);
+        listData.addAll(0, ld);
+        if (td != null && !td.isEmpty()){
+            typeData.addAll(0, td);
+        }
         notifyDataSetChanged();
-    }
-
-    @Override
-    public void addItemView(int position, View view) {
-
     }
 
     @Override
@@ -95,12 +106,20 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
 
     public abstract void onBindViewHolder(VH viewHolder, int position);
 
-    public abstract int getItemType(int position);
+    protected Object getItemType(int position){
+        if (typeData == null || typeData.isEmpty() || position >= typeData.size() )
+           return DataType.NORMAL_IMAGE;
+        return typeData.get(position);
+    }
 
     public abstract void onPageSelected(int position);
 
     protected View loadLayout(@LayoutRes int resource, ViewGroup  parent){
         return inflater.inflate(resource, parent, false);
+    }
+
+    private int getTagId(){
+        return R.layout.jgallery;
     }
 
     public static class ViewHolder {

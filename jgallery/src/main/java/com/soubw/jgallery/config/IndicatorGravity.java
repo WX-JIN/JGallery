@@ -5,7 +5,7 @@ package com.soubw.jgallery.config;
  * @email wangxiaojin@soubw.com
  * @link http://soubw.com
  */
-public class IndicatorGravityConfig {
+public class IndicatorGravity {
 
     public static final int LEFT_TOP = 1;
     public static final int LEFT_BOTTOM = 2;

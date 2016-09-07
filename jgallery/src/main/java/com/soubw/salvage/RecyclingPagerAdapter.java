@@ -33,12 +33,11 @@ public abstract class RecyclingPagerAdapter extends PagerAdapter {
     public final Object instantiateItem(ViewGroup container, int position) {
         int viewType = getItemViewType(position);
         View view = null;
-//        if (viewType != IGNORE_ITEM_VIEW_TYPE) {
-//            view = recycleBin.getScrapView(position, viewType);
-//        }
+        if (viewType != IGNORE_ITEM_VIEW_TYPE) {
+            view = recycleBin.getScrapView(position, viewType);
+        }
         view = getView(position, view, container);
         container.addView(view);
-        addItemView(position,view);
         return view;
     }
 
@@ -47,10 +46,10 @@ public abstract class RecyclingPagerAdapter extends PagerAdapter {
         View view = (View) object;
         container.removeView(view);
         removeItemView(position);
-//        int viewType = getItemViewType(position);
-//        if (viewType != IGNORE_ITEM_VIEW_TYPE) {
-//            recycleBin.addScrapView(view, position, viewType);
-//        }
+        int viewType = getItemViewType(position);
+        if (viewType != IGNORE_ITEM_VIEW_TYPE) {
+            recycleBin.addScrapView(view, position, viewType);
+        }
     }
 
     @Override
@@ -89,7 +88,7 @@ public abstract class RecyclingPagerAdapter extends PagerAdapter {
      */
     @SuppressWarnings("UnusedParameters") // Argument potentially used by subclasses.
     public int getItemViewType(int position) {
-        return 0;
+        return AdapterView.ITEM_VIEW_TYPE_IGNORE;
     }
 
     /**
@@ -111,8 +110,6 @@ public abstract class RecyclingPagerAdapter extends PagerAdapter {
      * @return A View corresponding to the data at the specified position.
      */
     public abstract View getView(int position, View convertView, ViewGroup container);
-
-    public abstract void addItemView(int position, View view);
 
     public abstract void removeItemView(int position);
 }

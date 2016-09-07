@@ -6,6 +6,8 @@
     <com.soubw.jgallery.JGallery
         android:id="@+id/jGallery"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        jgallery:indicator_gravity="right_bottom"/>
+        android:layout_height="200dp"
+        jgallery:indicator_gravity="right_bottom"
+        jgallery:default_image="@drawable/jgallery_bg"
+        jgallery:indicator_style="number"/>
 </RelativeLayout>

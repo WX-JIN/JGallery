@@ -14,7 +14,8 @@
     <com.soubw.photoview.PhotoView
         android:id="@+id/photoView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"/>
     <!--<com.soubw.utils.JRoundProgressBar-->
         <!--android:id="@+id/jRoundProgressBar"-->
         <!--android:layout_width="60dp"-->

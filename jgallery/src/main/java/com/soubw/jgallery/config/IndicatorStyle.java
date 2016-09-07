@@ -5,8 +5,9 @@ package com.soubw.jgallery.config;
  * @email wangxiaojin@soubw.com
  * @link http://soubw.com
  */
-public class IndicatorStyleConfig {
+public class IndicatorStyle {
 
-    public static final int CIRCLE_NUMBER = 1;
+    public static final int NUMBER = 1;
+    public static final int CIRCLE_NUMBER = 2;
     public static final int GONE = 9;
 }

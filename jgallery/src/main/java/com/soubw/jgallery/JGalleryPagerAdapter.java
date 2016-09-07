@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.soubw.jgallery.config.DataType;
 import com.soubw.jgallery.listener.JGalleryClickListener;
 import com.soubw.jgallery.listener.JGalleryLongClickListener;
 import com.soubw.jgallery.listener.JGalleryPageSelectedListener;
@@ -36,15 +38,17 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
 
     @Override
     public void onBindViewHolder(JGalleryHolder viewHolder, int position) {
-        if (defaultImage != -1)
-            Glide.with(context).load(listData.get(position)).centerCrop().crossFade().into(viewHolder.photoView);
-        else
-            Glide.with(context).load(listData.get(position)).centerCrop().crossFade().placeholder(defaultImage).into(viewHolder.photoView);
-    }
-
-    @Override
-    public int getItemType(int position) {
-        return R.layout.jgallery;
+        if (getItemType(position).equals(DataType.NORMAL_IMAGE) || getItemType(position).equals(DataType.VIDEO)){
+            if (defaultImage == -1)
+                Glide.with(context).load(listData.get(position)).centerCrop().crossFade().into(viewHolder.photoView);
+            else
+                Glide.with(context).load(listData.get(position)).centerCrop().crossFade().placeholder(defaultImage).into(viewHolder.photoView);
+        }else if(getItemType(position).equals(DataType.GIF_IMAGE)){
+            if (defaultImage == -1)
+                Glide.with(context).load(listData.get(position)).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(viewHolder.photoView);
+            else
+                Glide.with(context).load(listData.get(position)).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(defaultImage).into(viewHolder.photoView);
+        }
     }
 
     @Override
