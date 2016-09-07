@@ -2,10 +2,13 @@ package com.soubw.wxj;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Toast;
 
 import com.soubw.jgallery.JGallery;
 import com.soubw.jgallery.config.DataType;
 import com.soubw.jgallery.config.PageTransformer;
+import com.soubw.jgallery.listener.OnJGalleryClickListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,5 +44,11 @@ public class MainActivity extends AppCompatActivity {
 
         this.jGallery.setData(list,type);
         this.jGallery.setPageTransformer(PageTransformer.Tablet);
+        this.jGallery.setOnJGalleryClickListener(new OnJGalleryClickListener() {
+            @Override
+            public void OnClick(View view, int position) {
+                Toast.makeText(MainActivity.this, "position="+position, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

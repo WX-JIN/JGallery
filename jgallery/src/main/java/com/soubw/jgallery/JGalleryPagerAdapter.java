@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.soubw.jgallery.config.DataType;
-import com.soubw.jgallery.listener.JGalleryClickListener;
-import com.soubw.jgallery.listener.JGalleryLongClickListener;
-import com.soubw.jgallery.listener.JGalleryPageSelectedListener;
+import com.soubw.jgallery.listener.OnJGalleryClickListener;
+import com.soubw.jgallery.listener.OnJGalleryLongClickListener;
+import com.soubw.jgallery.listener.OnJGalleryPageSelectedListener;
 import com.soubw.photoview.PhotoView;
 import com.soubw.photoview.PhotoViewAttacher;
 
@@ -23,9 +23,9 @@ import java.util.List;
 public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAdapter.JGalleryHolder> {
 
     private int defaultImage = -1;
-    private JGalleryClickListener jGalleryClickListener;
-    private JGalleryLongClickListener jGalleryLongClickListener;
-    private JGalleryPageSelectedListener jGalleryPageSelectedListener;
+    private OnJGalleryClickListener onJGalleryClickListener;
+    private OnJGalleryLongClickListener onJGalleryLongClickListener;
+    private OnJGalleryPageSelectedListener onJGalleryPageSelectedListener;
 
     public JGalleryPagerAdapter(Context cx, List data) {
         super(cx, data);
@@ -54,28 +54,28 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
     @Override
     public void onPageSelected(final int position) {
         if (weakViewMap != null && weakViewMap.containsKey(position)) {
-            jGalleryPageSelectedListener.onJGalleryPageSelected(position);
+            onJGalleryPageSelectedListener.onJGalleryPageSelected(position);
             final JGalleryHolder holder = weakViewMap.get(position);
                 holder.photoView.setVisibility(View.VISIBLE);
                 holder.photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                     @Override
                     public void onPhotoTap(View view, float v, float v1) {
-                        if (jGalleryClickListener != null)
-                            jGalleryClickListener.OnClick(holder.photoView,position);
+                        if (onJGalleryClickListener != null)
+                            onJGalleryClickListener.OnClick(holder.photoView,position);
                     }
 
                     @Override
                     public void onOutsidePhotoTap() {
-                        if (jGalleryClickListener != null)
-                            jGalleryClickListener.OnClick(holder.photoView,position);
+                        if (onJGalleryClickListener != null)
+                            onJGalleryClickListener.OnClick(holder.photoView,position);
                     }
                 });
 
                 holder.photoView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        if (jGalleryLongClickListener != null)
-                            jGalleryLongClickListener.OnLongClick(holder.photoView,position);
+                        if (onJGalleryLongClickListener != null)
+                            onJGalleryLongClickListener.OnLongClick(holder.photoView,position);
                         return false;
                     }
                 });
@@ -96,16 +96,16 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
         }
     }
 
-    public void setJGalleryClickListener(JGalleryClickListener listener) {
-        this.jGalleryClickListener = listener;
+    public void setJGalleryClickListener(OnJGalleryClickListener listener) {
+        this.onJGalleryClickListener = listener;
     }
 
-    public void setJGalleryLongClickListener(JGalleryLongClickListener listener) {
-        this.jGalleryLongClickListener = listener;
+    public void setJGalleryLongClickListener(OnJGalleryLongClickListener listener) {
+        this.onJGalleryLongClickListener = listener;
     }
 
-    public void setJGalleryPageSelectedListener(JGalleryPageSelectedListener listener) {
-        this.jGalleryPageSelectedListener = listener;
+    public void setJGalleryPageSelectedListener(OnJGalleryPageSelectedListener listener) {
+        this.onJGalleryPageSelectedListener = listener;
     }
 
 }

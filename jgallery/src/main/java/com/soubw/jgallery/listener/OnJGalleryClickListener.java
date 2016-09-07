@@ -7,7 +7,7 @@ import android.view.View;
  * @email wangxiaojin@soubw.com
  * @link http://soubw.com
  */
-public interface JGalleryClickListener {
+public interface OnJGalleryClickListener {
 
     void OnClick(View view, int position);
 }

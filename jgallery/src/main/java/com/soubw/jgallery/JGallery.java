@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -16,9 +18,9 @@ import android.widget.TextView;
 
 import com.soubw.jgallery.config.IndicatorGravity;
 import com.soubw.jgallery.config.IndicatorStyle;
-import com.soubw.jgallery.listener.JGalleryClickListener;
-import com.soubw.jgallery.listener.JGalleryLongClickListener;
-import com.soubw.jgallery.listener.JGalleryPageSelectedListener;
+import com.soubw.jgallery.listener.OnJGalleryClickListener;
+import com.soubw.jgallery.listener.OnJGalleryLongClickListener;
+import com.soubw.jgallery.listener.OnJGalleryPageSelectedListener;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,19 +30,29 @@ import java.util.List;
  * @email wangxiaojin@soubw.com
  * @link http://soubw.com
  */
-public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListener, JGalleryPageSelectedListener {
+public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListener, OnJGalleryPageSelectedListener {
 
-    private static final String TAG = "JGallery";
+    private static final String TAG = "OnJGallery";
 
     private ViewPager viewPager;
+
 
     private JGalleryPagerAdapter jGalleryPagerAdapter;
     private ViewPager.OnPageChangeListener onPageChangeListener;
     private android.widget.TextView tvNumIndicator;
     private android.widget.LinearLayout indicator;
+
+    private Handler handler = new Handler();
+
+
     private int indicatorGravity = IndicatorGravity.RIGHT_BOTTOM;
+    private boolean autoPlay = true;
+    private boolean reStart = true;
     private int defaultImage = -1;
     private int dataCount = 0;
+    private int delayTime = 3000;
+    private int currentPos;
+
 
     public JGallery(Context context) {
         this(context, null);
@@ -80,7 +92,10 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         setIndicatorStyle(typedArray.getInt(R.styleable.JGallery_indicator_style, IndicatorStyle.NUMBER));
         setIndicatorNumberColor(typedArray.getColor(R.styleable.JGallery_indicator_number_color, Color.WHITE));
         setDefaultImage(typedArray.getResourceId(R.styleable.JGallery_default_image, defaultImage));
+        setAutoPlay(typedArray.getBoolean(R.styleable.JGallery_auto_play, autoPlay));
+        setReStart(typedArray.getBoolean(R.styleable.JGallery_re_start, reStart));
         typedArray.recycle();
+        startAutoPlay();
     }
 
     @Override
@@ -93,13 +108,13 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
     public void onPageSelected(int position) {
         if (jGalleryPagerAdapter != null)
             jGalleryPagerAdapter.onPageSelected(position);
+        currentPos = position;
     }
 
     @Override
     public void onJGalleryPageSelected(int position) {
         if (onPageChangeListener != null)
             onPageChangeListener.onPageSelected(position);
-        Log.d(TAG, "onPageSelected: " + position);
         tvNumIndicator.setText((position + 1) + "/" + dataCount);
     }
 
@@ -107,6 +122,44 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
     public void onPageScrollStateChanged(int state) {
         if (onPageChangeListener != null)
             onPageChangeListener.onPageScrollStateChanged(state);
+    }
+
+    private void startAutoPlay() {
+        handler.removeCallbacks(autoPlayTack);
+        if (autoPlay)
+            handler.postDelayed(autoPlayTack, delayTime);
+    }
+
+    private final Runnable autoPlayTack = new Runnable() {
+
+        @Override
+        public void run() {
+            if (autoPlay) {
+                if (dataCount > 1) {
+                    currentPos = currentPos == (dataCount - 1) ? reStart ? 0 : -1 : currentPos + 1;
+                    if (currentPos == -1)
+                        return;
+                    viewPager.setCurrentItem(currentPos);
+                    handler.postDelayed(autoPlayTack, delayTime);
+                }
+            }
+        }
+    };
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (dataCount > 1) {
+            switch (ev.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    setAutoPlay(false);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    setAutoPlay(true);
+                    break;
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     public void setIndicatorGravity(int type) {
@@ -165,6 +218,15 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         this.jGalleryPagerAdapter.setDefaultImage(defaultImage);
     }
 
+    public void setAutoPlay(boolean ap) {
+        this.autoPlay = ap;
+        startAutoPlay();
+    }
+
+    public void setReStart(boolean rs) {
+        this.reStart = rs;
+    }
+
     public void setPageTransformer(Class<? extends ViewPager.PageTransformer> transformer) {
         try {
             viewPager.setPageTransformer(true, transformer.newInstance());
@@ -177,81 +239,81 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         viewPager.setCurrentItem(currentItem);
     }
 
-    public void setJGalleryClickListener(JGalleryClickListener listener) {
+    public void setOnJGalleryClickListener(OnJGalleryClickListener listener) {
         jGalleryPagerAdapter.setJGalleryClickListener(listener);
     }
 
-    public void setJGalleryLongClickListener(JGalleryLongClickListener listener) {
+    public void setOnJGalleryLongClickListener(OnJGalleryLongClickListener listener) {
         jGalleryPagerAdapter.setJGalleryLongClickListener(listener);
     }
 
-    public void setPageChangeListener(ViewPager.OnPageChangeListener listener) {
+    public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
         this.onPageChangeListener = listener;
     }
 
 
-
     public void setData(Object[] ld) {
-        setData(Arrays.asList(ld),null);
+        setData(Arrays.asList(ld), null);
     }
 
     public void setData(Object[] ld, Object[] td) {
-        if (ld ==null || ld == null || td.length != td.length){
+        if (ld == null || ld == null || td.length != td.length) {
             new RuntimeException("data or type error");
             return;
         }
-        setData(Arrays.asList(ld),Arrays.asList(td));
+        setData(Arrays.asList(ld), Arrays.asList(td));
     }
 
     public void setData(List ld) {
-        setData(ld,null);
+        setData(ld, null);
     }
 
-    public void setData(List ld,List td) {
+    public void setData(List ld, List td) {
         if (ld == null || ld.size() <= 0) {
             return;
         }
         dataCount = ld.size();
-        jGalleryPagerAdapter.addRefreshData(ld,td);
+        currentPos = 0;
+        jGalleryPagerAdapter.addRefreshData(ld, td);
         viewPager.setFocusable(true);
         viewPager.addOnPageChangeListener(this);
     }
 
     public void addBeforeData(Object[] ld) {
-        addBeforeData(Arrays.asList(ld),null);
+        addBeforeData(Arrays.asList(ld), null);
     }
 
     public void addBeforeData(Object[] ld, Object[] td) {
-        addBeforeData(Arrays.asList(ld),Arrays.asList(td));
+        addBeforeData(Arrays.asList(ld), Arrays.asList(td));
     }
 
     public void addBeforeData(List ld) {
-        addBeforeData(ld,null);
+        addBeforeData(ld, null);
     }
 
-    public void addBeforeData(List data,List td) {
+    public void addBeforeData(List data, List td) {
         if (data == null || data.size() <= 0 || jGalleryPagerAdapter == null)
             return;
         dataCount += data.size();
-        jGalleryPagerAdapter.addBeforeData(data,td);
+        jGalleryPagerAdapter.addBeforeData(data, td);
     }
 
     public void addMoreData(Object[] ld) {
-        addMoreData(Arrays.asList(ld),null);
+        addMoreData(Arrays.asList(ld), null);
     }
 
     public void addMoreData(Object[] ld, Object[] td) {
-        addMoreData(Arrays.asList(ld),Arrays.asList(td));
+        addMoreData(Arrays.asList(ld), Arrays.asList(td));
     }
 
     public void addMoreData(List ld) {
-        addMoreData(ld,null);
+        addMoreData(ld, null);
     }
 
-    public void addMoreData(List data,List td) {
+    public void addMoreData(List data, List td) {
         if (data == null || data.size() <= 0 || jGalleryPagerAdapter == null)
             return;
         dataCount += data.size();
-        jGalleryPagerAdapter.addMoreData(data,td);
+        jGalleryPagerAdapter.addMoreData(data, td);
     }
 }
