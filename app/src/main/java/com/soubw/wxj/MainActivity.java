@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.soubw.jgallery.JGallery;
-import com.soubw.jgallery.config.IndicatorGravityConfig;
 import com.soubw.jgallery.config.PageTransformerConfig;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +30,5 @@ public class MainActivity extends AppCompatActivity {
 
         this.jGallery.setData(list);
         this.jGallery.setPageTransformer(PageTransformerConfig.Tablet);
-        this.jGallery.setIndicatorGravity(IndicatorGravityConfig.LEFT_BOTTOM);
     }
 }

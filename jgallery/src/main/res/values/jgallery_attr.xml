@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="JGallery">
+        <attr name="indicator_gravity" >
+            <enum name="left_top" value="1"/>
+            <enum name="left_bottom" value="2"/>
+            <enum name="right_top" value="3"/>
+            <enum name="right_bottom" value="4"/>
+            <enum name="center" value="5"/>
+            <enum name="center_top" value="6"/>
+            <enum name="center_bottom" value="7"/>
+        </attr>
+        <attr name="indicator_style" >
+            <enum name="circle_number" value="1"/>
+            <enum name="gone" value="9"/>
+        </attr>
+        <attr name="default_image" format="reference"/>
+    </declare-styleable>
+</resources>

@@ -15,8 +15,8 @@ import java.util.List;
 
 /**
  * @author WX_JIN
- * wangxiaojin@soubw.com
- * http://soubw.com
+ * @email wangxiaojin@soubw.com
+ * @link http://soubw.com
  */
 public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAdapter.JGalleryHolder> {
 

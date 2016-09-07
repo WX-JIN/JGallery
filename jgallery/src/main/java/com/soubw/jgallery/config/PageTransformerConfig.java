@@ -22,8 +22,8 @@ import com.soubw.jgallery.transformer.ZoomOutTranformer;
 
 /**
  * @author WX_JIN
- * wangxiaojin@soubw.com
- * http://soubw.com
+ * @email wangxiaojin@soubw.com
+ * @link http://soubw.com
  */
 public class PageTransformerConfig {
     public static Class<? extends PageTransformer> Default = DefaultTransformer.class;

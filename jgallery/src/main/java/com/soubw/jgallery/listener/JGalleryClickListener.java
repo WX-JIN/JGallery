@@ -4,8 +4,8 @@ import android.view.View;
 
 /**
  * @author WX_JIN
- * wangxiaojin@soubw.com
- * http://soubw.com
+ * @email wangxiaojin@soubw.com
+ * @link http://soubw.com
  */
 public interface JGalleryClickListener {
 
