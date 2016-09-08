@@ -28,9 +28,15 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
     protected WeakHashMap<Integer, VH> weakViewMap = new WeakHashMap<>();
     private boolean isFirstView = true;
 
-    public JGalleryRecycleAdapter(Context cx, List<?> data) {
+    public JGalleryRecycleAdapter(Context cx, List<?> ld) {
         this.context = cx;
-        this.listData = data;
+        addRefreshData(ld,null);
+        inflater = LayoutInflater.from(cx);
+    }
+
+    public JGalleryRecycleAdapter(Context cx, List<?> ld,List<?> td) {
+        this.context = cx;
+        addRefreshData(ld,td);
         inflater = LayoutInflater.from(cx);
     }
 
@@ -51,42 +57,48 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
         return holder.view;
     }
 
-    public void addRefreshData(List<?> ld,List<?> td) {
+    public void addRefreshData(List ld,List td) {
         if (ld == null || ld.isEmpty())
             return;
-        if (listData == null){
-            listData = new ArrayList<>();
-        }else {
-            listData.clear();
-        }
-        listData.addAll(ld);
+        loopListData(ld,false,false);
         if (td != null && !td.isEmpty()){
-            if (typeData == null){
-                typeData = new ArrayList<>();
-            }else {
-                typeData.clear();
-            }
-            typeData.addAll(td);
+            loopTypeData(td,false,false);
         }
         notifyDataSetChanged();
     }
 
-    public void addMoreData(List<?> ld,List<?> td) {
+    public void addMoreData(List ld,List td) {
         if (ld == null || ld.isEmpty()  || listData == null)
             return;
-        listData.addAll(getCount(), ld);
+        if (listData.size() > 0 ){
+            loopListData(ld,true,false);
+        }else{
+            loopListData(ld,false,false);
+        }
         if (td != null && !td.isEmpty()){
-            typeData.addAll(td);
+            if (typeData.size() > 0 ){
+                loopTypeData(ld,true,false);
+            }else{
+                loopTypeData(ld,false,false);
+            }
         }
         notifyDataSetChanged();
     }
 
-    public void addBeforeData(List<?> ld,List<?> td) {
+    public void addBeforeData(List ld,List td) {
         if (ld == null || ld.isEmpty() || listData == null)
             return;
-        listData.addAll(0, ld);
+        if (listData.size() > 0 ){
+            loopListData(ld,true,true);
+        }else{
+            loopListData(ld,false,false);
+        }
         if (td != null && !td.isEmpty()){
-            typeData.addAll(0, td);
+            if (typeData.size() > 0 ){
+                loopTypeData(ld,true,true);
+            }else{
+                loopTypeData(ld,false,false);
+            }
         }
         notifyDataSetChanged();
     }
@@ -120,6 +132,75 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
 
     private int getTagId(){
         return R.layout.jgallery;
+    }
+
+    private void loopListData(List<?> ld,boolean isClear,boolean isStart){
+        if (isClear){
+            listData.remove(0);
+            listData.remove(listData.size()-1);
+        }
+        List temp = new ArrayList();
+        if (isStart){
+            temp.addAll(listData.size(),ld);
+        }else{
+            temp.addAll(ld);
+        }
+        if (listData == null){
+            listData = new ArrayList<>();
+        }else {
+            listData.clear();
+        }
+        listData.addAll(temp);
+        if (temp.size() > 1){
+            listData.add(0,temp.get(temp.size()-1));
+            listData.add(listData.size(),temp.get(0));
+        }
+    }
+
+    private void loopTypeData(List<?> td,boolean isClear,boolean isStart){
+        if (isClear){
+            typeData.remove(0);
+            typeData.remove(typeData.size()-1);
+        }
+        List temp = new ArrayList();
+        if (isStart){
+            temp.addAll(typeData.size(),td);
+        }else{
+            temp.addAll(td);
+        }
+        if (typeData == null){
+            typeData = new ArrayList<>();
+        }else {
+            typeData.clear();
+        }
+        typeData.addAll(temp);
+        if (temp.size() > 1){
+            typeData.add(0,temp.get(temp.size()-1));
+            typeData.add(typeData.size(),temp.get(0));
+        }
+    }
+
+    public int getCurrentDataPos(int pos){
+        if (pos == 0){
+            return getCurrentDataCount() - 1;
+        }else if(pos == listData.size()-1){
+            return 0;
+        }else{
+            return pos - 1;
+        }
+    }
+
+    public int getCurrentDataCount(){
+        if (getCount() > 2){
+            return getCount() - 2;
+        }else{
+            return getCount();
+        }
+    }
+
+    @Override
+    public int getItemPosition(Object object){
+        return POSITION_NONE;
     }
 
     public static class ViewHolder {

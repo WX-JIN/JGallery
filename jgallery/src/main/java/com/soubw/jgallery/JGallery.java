@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import com.soubw.jgallery.listener.OnJGalleryClickListener;
 import com.soubw.jgallery.listener.OnJGalleryLongClickListener;
 import com.soubw.jgallery.listener.OnJGalleryPageSelectedListener;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,15 +45,15 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
     private android.widget.LinearLayout indicator;
 
     private Handler handler = new Handler();
+    private JGalleryScroller jGalleryScroller;
 
 
     private int indicatorGravity = IndicatorGravity.RIGHT_BOTTOM;
     private boolean autoPlay = true;
     private boolean reStart = true;
     private int defaultImage = -1;
-    private int dataCount = 0;
-    private int delayTime = 3000;
-    private int currentPos;
+    private int switchTime = 3000;
+    private int currentPos = 0;
 
 
     public JGallery(Context context) {
@@ -81,6 +83,14 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
             jGalleryPagerAdapter = new JGalleryPagerAdapter(context, null);
             viewPager.setAdapter(jGalleryPagerAdapter);
             jGalleryPagerAdapter.setJGalleryPageSelectedListener(this);
+            try {
+                Field mField = ViewPager.class.getDeclaredField("mScroller");
+                mField.setAccessible(true);
+                jGalleryScroller = new JGalleryScroller(viewPager.getContext(), new AccelerateInterpolator());
+                mField.set(viewPager, jGalleryScroller);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -94,6 +104,8 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         setDefaultImage(typedArray.getResourceId(R.styleable.JGallery_default_image, defaultImage));
         setAutoPlay(typedArray.getBoolean(R.styleable.JGallery_auto_play, autoPlay));
         setReStart(typedArray.getBoolean(R.styleable.JGallery_re_start, reStart));
+        setSwitchTime(typedArray.getInt(R.styleable.JGallery_switch_time, switchTime));
+        setScrollerTime(typedArray.getInt(R.styleable.JGallery_scroller_time, JGalleryScroller.DEFAULT_SCROLLER_TIME));
         typedArray.recycle();
         startAutoPlayTack(true);
     }
@@ -101,25 +113,47 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         if (onPageChangeListener != null)
-            onPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            onPageChangeListener.onPageScrolled(jGalleryPagerAdapter.getCurrentDataPos(position), positionOffset, positionOffsetPixels);
     }
 
     @Override
     public void onPageSelected(int position) {
         if (jGalleryPagerAdapter != null)
-            jGalleryPagerAdapter.onPageSelected(position);
-        currentPos = position;
+            jGalleryPagerAdapter.onPageSelected(jGalleryPagerAdapter.getCurrentDataPos(position));
     }
 
     @Override
     public void onJGalleryPageSelected(int position) {
         if (onPageChangeListener != null)
-            onPageChangeListener.onPageSelected(position);
-        tvNumIndicator.setText((position + 1) + "/" + dataCount);
+            onPageChangeListener.onPageSelected(jGalleryPagerAdapter.getCurrentDataPos(position));
+        currentPos = position;
+        showIndicator();
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
+        switch (state) {
+            case 1:
+                startAutoPlayTack(false);
+
+                break;
+            case 2:
+                startAutoPlayTack(true);
+                break;
+            case 0:
+                if (reStart){
+                    if (viewPager.getCurrentItem() == 0) {
+                        viewPager.setCurrentItem(jGalleryPagerAdapter.getCount()-2, false);
+                        jGalleryPagerAdapter.notifyDataSetChanged();
+                        Log.d(TAG, "onPageScrollStateChanged: "+(jGalleryPagerAdapter.getCount()-2));
+                    } else if (viewPager.getCurrentItem() == jGalleryPagerAdapter.getCount()-1) {
+                        viewPager.setCurrentItem(1, false);
+                        jGalleryPagerAdapter.notifyDataSetChanged();
+                    }
+                }
+                startAutoPlayTack(true);
+                break;
+        }
         if (onPageChangeListener != null)
             onPageChangeListener.onPageScrollStateChanged(state);
     }
@@ -128,7 +162,7 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         handler.removeCallbacks(autoPlayTack);
         if (!startAutoPlayTack)
             return;
-        handler.postDelayed(autoPlayTack, delayTime);
+        handler.postDelayed(autoPlayTack, switchTime);
     }
 
     private final Runnable autoPlayTack = new Runnable() {
@@ -136,12 +170,16 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         @Override
         public void run() {
             if (autoPlay) {
-                if (dataCount > 1) {
-                    currentPos = currentPos == (dataCount - 1) ? reStart ? 0 : -1 : currentPos + 1;
+                if (jGalleryPagerAdapter.getCount() > 1) {
+                    currentPos = currentPos == (jGalleryPagerAdapter.getCount() - 1) ? reStart ? 0 : -1 : currentPos + 1;
                     if (currentPos == -1)
                         return;
-                    viewPager.setCurrentItem(currentPos);
-                    handler.postDelayed(autoPlayTack, delayTime);
+                    if (currentPos == 0) {
+                        viewPager.setCurrentItem(currentPos, false);
+                    } else {
+                        viewPager.setCurrentItem(currentPos);
+                    }
+                    handler.postDelayed(autoPlayTack, switchTime);
                 }
             }
         }
@@ -149,7 +187,7 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (dataCount > 1) {
+        if (jGalleryPagerAdapter.getCount() > 1) {
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     startAutoPlayTack(false);
@@ -228,6 +266,15 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         this.reStart = rs;
     }
 
+    public void setSwitchTime(int time) {
+        this.switchTime = time;
+    }
+
+    public void setScrollerTime(int time) {
+        if (jGalleryScroller != null)
+            jGalleryScroller.setScrollerTime(time);
+    }
+
     public void setPageTransformer(Class<? extends ViewPager.PageTransformer> transformer) {
         try {
             viewPager.setPageTransformer(true, transformer.newInstance());
@@ -273,10 +320,9 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         if (ld == null || ld.size() <= 0) {
             return;
         }
-        dataCount = ld.size();
-        currentPos = 0;
         jGalleryPagerAdapter.addRefreshData(ld, td);
         viewPager.setFocusable(true);
+        viewPager.setCurrentItem(1);
         viewPager.addOnPageChangeListener(this);
     }
 
@@ -295,12 +341,8 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
     public void addBeforeData(List data, List td) {
         if (data == null || data.size() <= 0 || jGalleryPagerAdapter == null)
             return;
-        dataCount += data.size();
         jGalleryPagerAdapter.addBeforeData(data, td);
-        viewPager.removeAllViews();
-        //viewPager.setAdapter(jGalleryPagerAdapter);
-        jGalleryPagerAdapter.notifyDataSetChanged();
-        viewPager.setCurrentItem(currentPos);
+        showIndicator();
     }
 
     public void addMoreData(Object[] ld) {
@@ -318,7 +360,12 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
     public void addMoreData(List data, List td) {
         if (data == null || data.size() <= 0 || jGalleryPagerAdapter == null)
             return;
-        dataCount += data.size();
         jGalleryPagerAdapter.addMoreData(data, td);
+        showIndicator();
     }
+
+    private void showIndicator(){
+        tvNumIndicator.setText((jGalleryPagerAdapter.getCurrentDataPos(currentPos) + 1) + "/" + jGalleryPagerAdapter.getCurrentDataCount());
+    }
+
 }

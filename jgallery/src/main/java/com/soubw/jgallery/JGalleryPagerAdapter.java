@@ -27,8 +27,12 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
     private OnJGalleryLongClickListener onJGalleryLongClickListener;
     private OnJGalleryPageSelectedListener onJGalleryPageSelectedListener;
 
-    public JGalleryPagerAdapter(Context cx, List data) {
-        super(cx, data);
+    public JGalleryPagerAdapter(Context cx, List ld) {
+        super(cx, ld);
+    }
+
+    public JGalleryPagerAdapter(Context cx, List ld,List td) {
+        super(cx, ld, td);
     }
 
     @Override
@@ -56,18 +60,20 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
         if (weakViewMap != null && weakViewMap.containsKey(position)) {
             onJGalleryPageSelectedListener.onJGalleryPageSelected(position);
             final JGalleryHolder holder = weakViewMap.get(position);
+                if (holder.photoView == null)
+                    return;
                 holder.photoView.setVisibility(View.VISIBLE);
                 holder.photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                     @Override
                     public void onPhotoTap(View view, float v, float v1) {
                         if (onJGalleryClickListener != null)
-                            onJGalleryClickListener.OnClick(holder.photoView,position);
+                            onJGalleryClickListener.OnClick(holder.photoView,getCurrentDataPos(position));
                     }
 
                     @Override
                     public void onOutsidePhotoTap() {
                         if (onJGalleryClickListener != null)
-                            onJGalleryClickListener.OnClick(holder.photoView,position);
+                            onJGalleryClickListener.OnClick(holder.photoView,getCurrentDataPos(position));
                     }
                 });
 
@@ -75,7 +81,7 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
                     @Override
                     public boolean onLongClick(View v) {
                         if (onJGalleryLongClickListener != null)
-                            onJGalleryLongClickListener.OnLongClick(holder.photoView,position);
+                            onJGalleryLongClickListener.OnLongClick(holder.photoView,getCurrentDataPos(position));
                         return false;
                     }
                 });

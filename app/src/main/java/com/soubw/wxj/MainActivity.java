@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-              jGallery.addBeforeData(list1,type1);
+              //jGallery.addMoreData(list1,type1);
             }
-        },2000);
+        },1000);
     }
 }
