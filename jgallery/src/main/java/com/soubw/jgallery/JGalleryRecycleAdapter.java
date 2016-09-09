@@ -27,6 +27,7 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
 
     protected WeakHashMap<Integer, VH> weakViewMap = new WeakHashMap<>();
     private boolean isFirstView = true;
+    private boolean autoLoop;
 
     public JGalleryRecycleAdapter(Context cx, List<?> ld) {
         this.context = cx;
@@ -70,16 +71,24 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
     public void addMoreData(List ld,List td) {
         if (ld == null || ld.isEmpty()  || listData == null)
             return;
-        if (listData.size() > 0 ){
-            loopListData(ld,true,false);
+        if (listData.size() > 0){
+            if (autoLoop){
+                loopListData(ld,true,false);
+            }else {
+                loopListData(ld,false,false);
+            }
         }else{
             loopListData(ld,false,false);
         }
         if (td != null && !td.isEmpty()){
-            if (typeData.size() > 0 ){
-                loopTypeData(ld,true,false);
+            if (typeData.size() > 0){
+                if (autoLoop){
+                    loopTypeData(td,true,false);
+                }else {
+                    loopTypeData(td,false,false);
+                }
             }else{
-                loopTypeData(ld,false,false);
+                loopTypeData(td,false,false);
             }
         }
         notifyDataSetChanged();
@@ -88,16 +97,24 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
     public void addBeforeData(List ld,List td) {
         if (ld == null || ld.isEmpty() || listData == null)
             return;
-        if (listData.size() > 0 ){
-            loopListData(ld,true,true);
+        if (listData.size() > 0){
+            if (autoLoop){
+                loopListData(ld,true,true);
+            }else {
+                loopListData(ld,false,true);
+            }
         }else{
             loopListData(ld,false,false);
         }
         if (td != null && !td.isEmpty()){
-            if (typeData.size() > 0 ){
-                loopTypeData(ld,true,true);
+            if (typeData.size() > 0){
+                if (autoLoop){
+                    loopTypeData(td,true,true);
+                }else {
+                    loopTypeData(td,false,true);
+                }
             }else{
-                loopTypeData(ld,false,false);
+                loopTypeData(td,false,false);
             }
         }
         notifyDataSetChanged();
@@ -135,53 +152,65 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
     }
 
     private void loopListData(List<?> ld,boolean isClear,boolean isStart){
+        List temp = new ArrayList();
+        if (listData == null){
+            listData = new ArrayList<>();
+        }
         if (isClear){
             listData.remove(0);
             listData.remove(listData.size()-1);
         }
-        List temp = new ArrayList();
         if (isStart){
-            temp.addAll(listData.size(),ld);
+            temp.addAll(ld);
+            temp.addAll(listData);
         }else{
+            temp.addAll(listData);
             temp.addAll(ld);
         }
-        if (listData == null){
-            listData = new ArrayList<>();
-        }else {
-            listData.clear();
-        }
+        listData.clear();
         listData.addAll(temp);
-        if (temp.size() > 1){
+        if (temp.size() > 1 && autoLoop){
             listData.add(0,temp.get(temp.size()-1));
             listData.add(listData.size(),temp.get(0));
         }
     }
 
     private void loopTypeData(List<?> td,boolean isClear,boolean isStart){
+        List temp = new ArrayList();
+        if (typeData == null){
+            typeData = new ArrayList<>();
+        }
         if (isClear){
             typeData.remove(0);
             typeData.remove(typeData.size()-1);
         }
-        List temp = new ArrayList();
         if (isStart){
-            temp.addAll(typeData.size(),td);
+            temp.addAll(td);
+            temp.addAll(typeData);
         }else{
+            temp.addAll(typeData);
             temp.addAll(td);
         }
-        if (typeData == null){
-            typeData = new ArrayList<>();
-        }else {
-            typeData.clear();
-        }
+        typeData.clear();
         typeData.addAll(temp);
-        if (temp.size() > 1){
+        if (temp.size() > 1  && autoLoop){
             typeData.add(0,temp.get(temp.size()-1));
             typeData.add(typeData.size(),temp.get(0));
         }
     }
 
+    public int getLoopDataPos(int currentPos){
+        if (getCount() > 2  && autoLoop){
+            return currentPos + 1;
+        }else{
+            return currentPos;
+        }
+    }
+
     public int getCurrentDataPos(int pos){
-        if (pos == 0){
+        if (!autoLoop)
+            return pos;
+        if (pos == 0 ){
             return getCurrentDataCount() - 1;
         }else if(pos == listData.size()-1){
             return 0;
@@ -191,11 +220,15 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
     }
 
     public int getCurrentDataCount(){
-        if (getCount() > 2){
+        if (getCount() > 2  && autoLoop){
             return getCount() - 2;
         }else{
             return getCount();
         }
+    }
+
+    public void setAutoLoop(boolean al) {
+        this.autoLoop = al;
     }
 
     @Override

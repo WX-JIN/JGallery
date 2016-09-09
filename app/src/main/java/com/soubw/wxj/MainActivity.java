@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
         this.jGallery.setData(list,type);
         this.jGallery.setPageTransformer(PageTransformer.Tablet);
+        this.jGallery.setCurrentItem(3);
+        this.jGallery.setAutoPlay(false);
         this.jGallery.setOnJGalleryClickListener(new OnJGalleryClickListener() {
             @Override
             public void OnClick(View view, int position) {
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-              //jGallery.addMoreData(list1,type1);
+              jGallery.addBeforeData(list1,type1);
             }
         },1000);
     }

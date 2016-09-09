@@ -18,7 +18,7 @@
         <attr name="indicator_number_color" format="color"/>
         <attr name="default_image" format="reference"/>
         <attr name="auto_play" format="boolean"/>
-        <attr name="re_start" format="boolean"/>
+        <attr name="auto_loop" format="boolean"/>
         <attr name="scroller_time" format="integer"/>
         <attr name="switch_time" format="integer"/>
     </declare-styleable>

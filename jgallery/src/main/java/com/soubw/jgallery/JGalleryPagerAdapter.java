@@ -60,8 +60,6 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
         if (weakViewMap != null && weakViewMap.containsKey(position)) {
             onJGalleryPageSelectedListener.onJGalleryPageSelected(position);
             final JGalleryHolder holder = weakViewMap.get(position);
-                if (holder.photoView == null)
-                    return;
                 holder.photoView.setVisibility(View.VISIBLE);
                 holder.photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                     @Override
