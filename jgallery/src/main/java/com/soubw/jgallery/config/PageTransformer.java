@@ -23,8 +23,8 @@ import com.soubw.jgallery.transformer.ZoomOutTranformer;
 
 /**
  * @author WX_JIN
- * @email wangxiaojin@soubw.com
- * @link http://soubw.com
+ * wangxiaojin@soubw.com
+ * http://soubw.com
  */
 public class PageTransformer {
     public static Class<? extends ViewPager.PageTransformer> Default = DefaultTransformer.class;

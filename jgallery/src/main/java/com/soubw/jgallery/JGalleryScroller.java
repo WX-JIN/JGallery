@@ -3,7 +3,11 @@ package com.soubw.jgallery;
 import android.content.Context;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
-
+/**
+ * @author WX_JIN
+ * wangxiaojin@soubw.com
+ * http://soubw.com
+ */
 public class JGalleryScroller extends Scroller {
 
     public static int DEFAULT_SCROLLER_TIME = 1000;

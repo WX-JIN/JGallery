@@ -1,9 +1,9 @@
 package com.soubw.jgallery.config;
 
 /**
- * @author WX_JIN on 2016/9/7
- * @email wangxiaojin@soubw.com
- * @link http://soubw.com
+ * @author WX_JIN
+ * wangxiaojin@soubw.com
+ * http://soubw.com
  */
 public class DataType {
 
