@@ -3,8 +3,8 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 
-def siteUrl = 'https://github.com/WX-JIN/OnJGallery'
-def gitUrl = 'https://github.com/WX-JIN/OnJGallery.git'
+def siteUrl = 'https://github.com/WX-JIN/JGallery'
+def gitUrl = 'https://github.com/WX-JIN/JGallery.git'
 
 group = "com.soubw"
 
@@ -33,7 +33,7 @@ install {
         pom {
             project {
                 packaging 'aar'
-                name 'OnJGallery'
+                name 'JGallery'
                 url siteUrl
                 licenses {
                     license {
@@ -86,7 +86,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "OnJGallery"
+        name = "JGallery"
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
