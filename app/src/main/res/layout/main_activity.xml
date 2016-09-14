@@ -7,8 +7,9 @@
         android:id="@+id/jGallery"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        jgallery:indicator_gravity="right_bottom"
-        jgallery:default_image="@drawable/jgallery_bg"
-        jgallery:indicator_style="number"
-        jgallery:auto_loop="true"/>
+        jgallery:JGallery_indicator_gravity="right_bottom"
+        jgallery:JGallery_default_image="@drawable/jgallery_bg"
+        jgallery:JGallery_indicator_style="number"
+        jgallery:JGallery_auto_play="true"
+        jgallery:JGallery_auto_loop="true"/>
 </RelativeLayout>

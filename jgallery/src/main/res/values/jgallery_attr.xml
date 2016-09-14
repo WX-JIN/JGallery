@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="JGallery">
-        <attr name="indicator_gravity" >
+        <attr name="JGallery_indicator_gravity" >
             <enum name="left_top" value="1"/>
             <enum name="left_bottom" value="2"/>
             <enum name="right_top" value="3"/>
@@ -10,16 +10,16 @@
             <enum name="center_top" value="6"/>
             <enum name="center_bottom" value="7"/>
         </attr>
-        <attr name="indicator_style" >
+        <attr name="JGallery_indicator_style" >
             <enum name="number" value="1"/>
             <enum name="circle_number" value="2"/>
             <enum name="gone" value="9"/>
         </attr>
-        <attr name="indicator_number_color" format="color"/>
-        <attr name="default_image" format="reference"/>
-        <attr name="auto_play" format="boolean"/>
-        <attr name="auto_loop" format="boolean"/>
-        <attr name="scroller_time" format="integer"/>
-        <attr name="switch_time" format="integer"/>
+        <attr name="JGallery_indicator_number_color" format="color"/>
+        <attr name="JGallery_default_image" format="reference"/>
+        <attr name="JGallery_auto_play" format="boolean"/>
+        <attr name="JGallery_auto_loop" format="boolean"/>
+        <attr name="JGallery_scroller_time" format="integer"/>
+        <attr name="JGallery_switch_time" format="integer"/>
     </declare-styleable>
 </resources>

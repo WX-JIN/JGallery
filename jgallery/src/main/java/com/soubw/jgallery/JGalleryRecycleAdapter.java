@@ -61,8 +61,14 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
     public void addRefreshData(List ld,List td) {
         if (ld == null || ld.isEmpty())
             return;
+        if (listData != null){
+            listData.clear();
+        }
         loopListData(ld,false,false);
         if (td != null && !td.isEmpty()){
+            if (typeData != null){
+                typeData.clear();
+            }
             loopTypeData(td,false,false);
         }
         notifyDataSetChanged();

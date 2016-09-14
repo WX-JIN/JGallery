@@ -8,7 +8,7 @@ def gitUrl = 'https://github.com/WX-JIN/JGallery.git'
 
 group = "com.soubw"
 
-version = "0.1.2"
+version = "0.1.6"
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -106,4 +106,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'fm.jiecao:jiecaovideoplayer:4.6.5'
 }

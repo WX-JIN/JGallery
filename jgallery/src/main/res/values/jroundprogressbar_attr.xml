@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="JRoundProgressBar">
+        <attr name="JGallery_JRoundColor" format="color" />
+        <attr name="JGallery_JRoundProgressColor" format="color" />
+        <attr name="JGallery_JRoundWidth" format="dimension"></attr>
+        <attr name="JGallery_JRoundTextColor" format="color" />
+        <attr name="JGallery_JRoundTextSize" format="dimension" />
+        <attr name="JGallery_JRoundMax" format="integer"></attr>
+        <attr name="JGallery_JRoundTextIsDisplayable" format="boolean"></attr>
+        <attr name="JGallery_JRoundStyle">
+            <enum name="STROKE" value="0"></enum>
+            <enum name="FILL" value="1"></enum>
+            <enum name="FILL_NO_STROKE" value="2"></enum>
+        </attr>
+    </declare-styleable>
+</resources>

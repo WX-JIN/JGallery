@@ -40,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/gif/list/1.gif",
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/gif/list/2.gif",
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/gif/list/3.gif",
-                "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/gif/list/4.gif",
-                "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/gif/list/5.gif"
+                "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/gif/list/4.gif"
         };
 
         final String[] type = new String[]{
@@ -49,13 +48,11 @@ public class MainActivity extends AppCompatActivity {
         };
 
         final String[] type1 = new String[]{
-                DataType.GIF_IMAGE, DataType.GIF_IMAGE, DataType.GIF_IMAGE, DataType.GIF_IMAGE, DataType.GIF_IMAGE
+                DataType.GIF_IMAGE, DataType.GIF_IMAGE, DataType.GIF_IMAGE, DataType.GIF_IMAGE
         };
 
-        this.jGallery.setData(list,type);
+        this.jGallery.setData(list1,type1);
         this.jGallery.setPageTransformer(PageTransformer.Tablet);
-        this.jGallery.setCurrentItem(3);
-        this.jGallery.setAutoPlay(false);
         this.jGallery.setOnJGalleryClickListener(new OnJGalleryClickListener() {
             @Override
             public void OnClick(View view, int position) {
@@ -66,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-              jGallery.addBeforeData(list1,type1);
+              //jGallery.addBeforeData(list1,type1);
             }
         },1000);
     }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:jgallery="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:layout_centerInParent="true" />
+    <com.soubw.jroundprogressbar.JRoundProgressBar
+        android:id="@+id/jRoundProgressBar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        jgallery:JGallery_JRoundColor="#99CCCCCC"
+        jgallery:JGallery_JRoundProgressColor="@android:color/white"
+        jgallery:JGallery_JRoundWidth="4dp"
+        jgallery:JGallery_JRoundStyle="FILL_NO_STROKE"
+        jgallery:JGallery_JRoundTextIsDisplayable="false" />
+    <ImageView
+        android:id="@+id/ivPlayVideo"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/jgallery_play_video" />
+    <LinearLayout
+        android:id="@+id/layoutVideoOver"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true">
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/jgallery_video_over" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="@string/jgallery_video_over"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </LinearLayout>
+</RelativeLayout>

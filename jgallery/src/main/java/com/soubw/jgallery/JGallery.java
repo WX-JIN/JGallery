@@ -99,14 +99,14 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         if (attrs == null)
             return;
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.JGallery);
-        setIndicatorGravity(typedArray.getInt(R.styleable.JGallery_indicator_gravity, IndicatorGravity.RIGHT_BOTTOM));
-        setIndicatorStyle(typedArray.getInt(R.styleable.JGallery_indicator_style, IndicatorStyle.NUMBER));
-        setIndicatorNumberColor(typedArray.getColor(R.styleable.JGallery_indicator_number_color, Color.WHITE));
-        setDefaultImage(typedArray.getResourceId(R.styleable.JGallery_default_image, defaultImage));
-        setAutoPlay(typedArray.getBoolean(R.styleable.JGallery_auto_play, autoPlay));
-        setAutoLoop(typedArray.getBoolean(R.styleable.JGallery_auto_loop, autoLoop));
-        setSwitchTime(typedArray.getInt(R.styleable.JGallery_switch_time, switchTime));
-        setScrollerTime(typedArray.getInt(R.styleable.JGallery_scroller_time, JGalleryScroller.DEFAULT_SCROLLER_TIME));
+        setIndicatorGravity(typedArray.getInt(R.styleable.JGallery_JGallery_indicator_gravity, IndicatorGravity.RIGHT_BOTTOM));
+        setIndicatorStyle(typedArray.getInt(R.styleable.JGallery_JGallery_indicator_style, IndicatorStyle.NUMBER));
+        setIndicatorNumberColor(typedArray.getColor(R.styleable.JGallery_JGallery_indicator_number_color, Color.WHITE));
+        setDefaultImage(typedArray.getResourceId(R.styleable.JGallery_JGallery_default_image, defaultImage));
+        setAutoPlay(typedArray.getBoolean(R.styleable.JGallery_JGallery_auto_play, autoPlay));
+        setAutoLoop(typedArray.getBoolean(R.styleable.JGallery_JGallery_auto_loop, autoLoop));
+        setSwitchTime(typedArray.getInt(R.styleable.JGallery_JGallery_switch_time, switchTime));
+        setScrollerTime(typedArray.getInt(R.styleable.JGallery_JGallery_scroller_time, JGalleryScroller.DEFAULT_SCROLLER_TIME));
         typedArray.recycle();
         startAutoPlayTack(true);
     }
