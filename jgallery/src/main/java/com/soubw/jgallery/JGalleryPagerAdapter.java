@@ -9,13 +9,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.soubw.jgallery.config.DataType;
 import com.soubw.jgallery.listener.OnJGalleryClickListener;
+import com.soubw.jgallery.listener.OnJGalleryLoadListener;
 import com.soubw.jgallery.listener.OnJGalleryLongClickListener;
 import com.soubw.jgallery.listener.OnJGalleryPageSelectedListener;
+import com.soubw.jvideoview.JVideoView;
 
 import java.util.List;
-
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
 /**
  * @author WX_JIN
@@ -27,6 +26,7 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
     private int defaultImage = -1;
     private OnJGalleryClickListener onJGalleryClickListener;
     private OnJGalleryLongClickListener onJGalleryLongClickListener;
+    private OnJGalleryLoadListener onJGalleryLoadListener;
     private OnJGalleryPageSelectedListener onJGalleryPageSelectedListener;
 
     public JGalleryPagerAdapter(Context cx, List ld) {
@@ -56,12 +56,23 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
                 Glide.with(context).load(listData.get(position)).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.photoView);
             else
                 Glide.with(context).load(listData.get(position)).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(defaultImage).into(holder.photoView);
-        }else if(getItemType(position).equals(DataType.VIDEO)){
+        }else if(getItemType(position).equals(DataType.NET_VIDEO)||
+                getItemType(position).equals(DataType.LOCAL_VIDEO) ||
+                getItemType(position).equals(DataType.OVER_VIDEO)){//todo wxj
             displayType(holder, true);
-            boolean setUp = holder.videoView.setUp(String.valueOf(listData.get(position)), JCVideoPlayer.SCREEN_LAYOUT_LIST, "");
-            if (setUp) {
-                Glide.with(context).load(listData.get(position)).centerCrop().crossFade().placeholder(defaultImage).into(holder.videoView.thumbImageView);
-            }
+            holder.jVideoView.setData(listData.get(position),typeData.get(position),position);
+            holder.jVideoView.setJGalleryClickListener(onJGalleryClickListener);
+            holder.jVideoView.setJGalleryLongClickListener(onJGalleryLongClickListener);
+            holder.jVideoView.setJGalleryLoadListener(new OnJGalleryLoadListener() {
+                @Override
+                public void onLoad(int position, String path, String name) {
+                    changeListDataStatus(position,path);
+                    changeTypeDataStatus(position,DataType.LOCAL_VIDEO);
+                    if (onJGalleryLoadListener != null){
+                        onJGalleryLoadListener.onLoad(position,path,name);
+                    }
+                }
+            });
         }
     }
 
@@ -88,7 +99,9 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
                         return false;
                     }
                 });
-            }else if(getItemType(position).equals(DataType.VIDEO)){
+            }else if(getItemType(position).equals(DataType.NET_VIDEO)
+                    ||getItemType(position).equals(DataType.LOCAL_VIDEO)||
+                    getItemType(position).equals(DataType.OVER_VIDEO)){//todo wxj
                 displayType(holder, true);
 
             }
@@ -99,10 +112,10 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
     public void displayType(JGalleryHolder holder, boolean isVideo){
         if (isVideo){
             holder.photoView.setVisibility(View.INVISIBLE);
-            holder.videoView.setVisibility(View.VISIBLE);
+            holder.jVideoView.setVisibility(View.VISIBLE);
         }else{
             holder.photoView.setVisibility(View.VISIBLE);
-            holder.videoView.setVisibility(View.INVISIBLE);
+            holder.jVideoView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -113,12 +126,12 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
     public static class JGalleryHolder extends JGalleryRecycleAdapter.ViewHolder {
 
         private ImageView photoView;
-        private JCVideoPlayerStandard videoView;
+        private JVideoView jVideoView;
 
         public JGalleryHolder(View view) {
             super(view);
             photoView = (ImageView) view.findViewById(R.id.photoView);
-            videoView = (JCVideoPlayerStandard) view.findViewById(R.id.videoView);
+            jVideoView = (JVideoView) view.findViewById(R.id.jVideoView);
         }
     }
 
@@ -128,6 +141,10 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
 
     public void setJGalleryLongClickListener(OnJGalleryLongClickListener listener) {
         this.onJGalleryLongClickListener = listener;
+    }
+
+    public void setJGalleryLoadListener(OnJGalleryLoadListener listener) {
+        this.onJGalleryLoadListener = listener;
     }
 
     public void setJGalleryPageSelectedListener(OnJGalleryPageSelectedListener listener) {

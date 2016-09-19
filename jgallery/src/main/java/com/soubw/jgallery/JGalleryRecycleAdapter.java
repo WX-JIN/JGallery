@@ -213,6 +213,18 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
         }
     }
 
+    public void changeListDataStatus(int pos,String path){
+        listData.remove(pos);
+        listData.add(pos,path);
+    }
+
+    public void changeTypeDataStatus(int pos,String date){
+        typeData.remove(pos);
+        typeData.add(pos,date);
+    }
+
+
+
     public int getCurrentDataPos(int pos){
         if (!autoLoop)
             return pos;

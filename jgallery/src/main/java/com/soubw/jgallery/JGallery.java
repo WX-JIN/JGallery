@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.soubw.jgallery.config.IndicatorGravity;
 import com.soubw.jgallery.config.IndicatorStyle;
 import com.soubw.jgallery.listener.OnJGalleryClickListener;
+import com.soubw.jgallery.listener.OnJGalleryLoadListener;
 import com.soubw.jgallery.listener.OnJGalleryLongClickListener;
 import com.soubw.jgallery.listener.OnJGalleryPageSelectedListener;
 
@@ -303,9 +304,15 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         jGalleryPagerAdapter.setJGalleryLongClickListener(listener);
     }
 
+    public void setOnJGalleryLoadListener(OnJGalleryLoadListener listener) {
+        jGalleryPagerAdapter.setJGalleryLoadListener(listener);
+    }
+
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
         this.onPageChangeListener = listener;
     }
+
+
 
 
     public void setData(Object[] ld) {

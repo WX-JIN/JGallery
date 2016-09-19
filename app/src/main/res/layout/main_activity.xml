@@ -10,6 +10,6 @@
         jgallery:JGallery_indicator_gravity="right_bottom"
         jgallery:JGallery_default_image="@drawable/jgallery_bg"
         jgallery:JGallery_indicator_style="number"
-        jgallery:JGallery_auto_play="true"
-        jgallery:JGallery_auto_loop="true"/>
+        jgallery:JGallery_auto_play="false"
+        jgallery:JGallery_auto_loop="false"/>
 </RelativeLayout>

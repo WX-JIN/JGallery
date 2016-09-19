@@ -3,29 +3,7 @@
     xmlns:jgallery="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black">
-    <VideoView
-        android:id="@+id/videoView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@null"
-        android:layout_centerInParent="true" />
-    <com.soubw.jroundprogressbar.JRoundProgressBar
-        android:id="@+id/jRoundProgressBar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_centerInParent="true"
-        jgallery:JGallery_JRoundColor="#99CCCCCC"
-        jgallery:JGallery_JRoundProgressColor="@android:color/white"
-        jgallery:JGallery_JRoundWidth="4dp"
-        jgallery:JGallery_JRoundStyle="FILL_NO_STROKE"
-        jgallery:JGallery_JRoundTextIsDisplayable="false" />
-    <ImageView
-        android:id="@+id/ivPlayVideo"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/jgallery_play_video" />
+    android:background="@null">
     <LinearLayout
         android:id="@+id/layoutVideoOver"
         android:layout_width="match_parent"
@@ -34,6 +12,7 @@
         android:gravity="center"
         android:layout_centerInParent="true">
         <ImageView
+            android:id="@+id/ivImage"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_centerInParent="true"
@@ -47,4 +26,39 @@
             android:textColor="#ffffff"
             android:textSize="16sp" />
     </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/layoutVideo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null">
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:layout_centerInParent="true" />
+        <com.soubw.jroundprogressbar.JRoundProgressBar
+            android:id="@+id/jRoundProgressBar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            jgallery:JGallery_JRoundColor="#99CCCCCC"
+            jgallery:JGallery_JRoundProgressColor="@android:color/white"
+            jgallery:JGallery_JRoundWidth="4dp"
+            jgallery:JGallery_JRoundStyle="FILL_NO_STROKE"
+            jgallery:JGallery_JRoundTextIsDisplayable="false" />
+        <ImageView
+            android:id="@+id/ivPlayVideo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/jgallery_play_video" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
 </RelativeLayout>

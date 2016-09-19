@@ -10,7 +10,7 @@ import android.widget.Scroller;
  */
 public class JGalleryScroller extends Scroller {
 
-    public static int DEFAULT_SCROLLER_TIME = 1000;
+    public static int DEFAULT_SCROLLER_TIME = 300;
     private int scrollerTime = DEFAULT_SCROLLER_TIME;
 
     public JGalleryScroller(Context context) {

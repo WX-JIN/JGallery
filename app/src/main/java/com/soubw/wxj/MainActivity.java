@@ -1,6 +1,7 @@
 package com.soubw.wxj;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -37,10 +38,15 @@ public class MainActivity extends AppCompatActivity {
         };
 
         final String[] list1 = new String[]{
+                Environment.getExternalStorageDirectory().getPath()+"/test.gif",
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/gif/list/1.gif",
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/gif/list/2.gif",
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/gif/list/3.gif",
-                "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/gif/list/4.gif"
+                "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/gif/list/4.gif",
+                Environment.getExternalStorageDirectory().getPath()+"/wxj/b123.mp4"
+                ,"http://7xllxs.com1.z0.glb.clouddn.com/common/pic/banner/1.jpg",
+                "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/banner/2.jpg",
+                "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/banner/3.jpg"
         };
 
         final String[] type = new String[]{
@@ -48,18 +54,18 @@ public class MainActivity extends AppCompatActivity {
         };
 
         final String[] type1 = new String[]{
-                DataType.GIF_IMAGE, DataType.GIF_IMAGE, DataType.GIF_IMAGE, DataType.GIF_IMAGE
+                DataType.LOCAL_VIDEO,DataType.GIF_IMAGE, DataType.GIF_IMAGE, DataType.GIF_IMAGE, DataType.GIF_IMAGE,DataType.OVER_VIDEO, DataType.NORMAL_IMAGE, DataType.NORMAL_IMAGE, DataType.NORMAL_IMAGE
+
         };
 
         this.jGallery.setData(list1,type1);
-        this.jGallery.setPageTransformer(PageTransformer.Tablet);
+        this.jGallery.setPageTransformer(PageTransformer.Default);
         this.jGallery.setOnJGalleryClickListener(new OnJGalleryClickListener() {
             @Override
             public void OnClick(View view, int position) {
                 Toast.makeText(MainActivity.this, "position="+position, Toast.LENGTH_SHORT).show();
             }
         });
-
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
