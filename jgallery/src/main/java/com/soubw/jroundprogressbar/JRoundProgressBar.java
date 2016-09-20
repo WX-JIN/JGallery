@@ -13,9 +13,10 @@ import android.view.View;
 
 import com.soubw.jgallery.R;
 
-
 /**
- * 修改xiaanming的自定义控件
+ * author：WX_JIN
+ * email：wangxiaojin@soubw.com
+ * link: http://soubw.com
  */
 public class JRoundProgressBar extends View {
 	/**

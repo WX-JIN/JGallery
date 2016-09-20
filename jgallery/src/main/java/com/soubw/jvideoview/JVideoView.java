@@ -2,12 +2,13 @@ package com.soubw.jvideoview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.PixelFormat;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -25,16 +26,17 @@ import com.soubw.jroundprogressbar.JRoundProgressBar;
 import com.soubw.utils.OkHttpProgress;
 
 /**
- * @author WX_JIN
- *         wangxiaojin@soubw.com
- *         http://soubw.com
+ * author：WX_JIN
+ * email：wangxiaojin@soubw.com
+ * link: http://soubw.com
  */
 public class JVideoView extends FrameLayout {
 
-    private android.widget.VideoView videoView;
-    private com.soubw.jroundprogressbar.JRoundProgressBar jRoundProgressBar;
-    private android.widget.ImageView ivPlayVideo;
-    private android.widget.LinearLayout layoutVideoOver;
+    private VideoView videoView;
+    private JRoundProgressBar jRoundProgressBar;
+    private ImageView ivPlayVideo;
+    private ImageView ivImage;
+    private LinearLayout layoutVideoOver;
     private ProgressBar progressBar;
 
     private OnJGalleryClickListener onJGalleryClickListener;
@@ -44,8 +46,10 @@ public class JVideoView extends FrameLayout {
     private Object url;
     private Object dataType;
     private int position;
+    private int currentPosition = -1;
+    private int defaultImage = -1;
 
-
+    private MediaMetadataRetriever mediaMetadataRetriever;
 
     public JVideoView(Context context) {
         this(context, null);
@@ -58,20 +62,27 @@ public class JVideoView extends FrameLayout {
     public JVideoView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context);
+
     }
 
-    private void initView(Context context) {
+    private void initView(final Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.jvideoview, this, true);
         view.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (videoView.isPlaying()){
+                    currentPosition = videoView.getCurrentPosition();
                     videoView.pause();
-                    Bitmap bitmap = getDrawingCache();
+                    Bitmap bitmap = mediaMetadataRetriever.getFrameAtTime(currentPosition * 1000,
+                            MediaMetadataRetriever.OPTION_NEXT_SYNC);
                     if (bitmap != null) {
-                        //iv.setImageBitmap(bitmap);
+                        ivImage.setVisibility(View.VISIBLE);
+                        ivImage.setImageBitmap(bitmap);
+                    }else if(defaultImage != -1){
+                        ivImage.setVisibility(View.VISIBLE);
+                        ivImage.setImageResource(defaultImage);
                     }
-                    videoView.setZOrderMediaOverlay(true);
+                    videoView.setVisibility(View.INVISIBLE);
                     ivPlayVideo.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -90,11 +101,18 @@ public class JVideoView extends FrameLayout {
             }
         });
         this.layoutVideoOver = (LinearLayout) view.findViewById(R.id.layoutVideoOver);
+        this.ivImage = (ImageView) view.findViewById(R.id.ivImage);
+        mediaMetadataRetriever = new MediaMetadataRetriever();
         this.ivPlayVideo = (ImageView) view.findViewById(R.id.ivPlayVideo);
         this.ivPlayVideo.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (dataType.equals(DataType.LOCAL_VIDEO)){
+                    ivImage.setVisibility(View.INVISIBLE);
+                    videoView.setVisibility(View.VISIBLE);
+                    if (currentPosition != -1){
+                        videoView.seekTo(currentPosition);
+                    }
                     videoView.start();
                     if (!videoView.isPlaying()){
                         progressBar.setVisibility(View.VISIBLE);
@@ -103,13 +121,12 @@ public class JVideoView extends FrameLayout {
                 } else if(dataType.equals(DataType.NET_VIDEO)){
                     initLoadVideo();
                 }
-
             }
         });
         this.jRoundProgressBar = (JRoundProgressBar) view.findViewById(R.id.jRoundProgressBar);
         this.videoView = (VideoView) view.findViewById(R.id.videoView);
         this.videoView.setZOrderOnTop(true);
-        //this.videoView.getHolder().setFormat(PixelFormat.TRANSPARENT);
+        this.videoView.getHolder().setFormat(PixelFormat.TRANSPARENT);
         this.progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         this.videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -123,10 +140,7 @@ public class JVideoView extends FrameLayout {
                 ivPlayVideo.setVisibility(View.VISIBLE);
             }
         });
-
-
     }
-
 
     private static final int MESSAGE_PROGRESS = 1;
     private static final int MESSAGE_FILE = 2;
@@ -161,7 +175,6 @@ public class JVideoView extends FrameLayout {
         final OkHttpProgress.ProgressListener progressListener = new OkHttpProgress.ProgressListener() {
             @Override
             public void update(long bytesRead,long contentLength, boolean done) {
-                Log.e("wxj", bytesRead + "," + contentLength + done);
                 if (handler != null) {
                     Message message = handler.obtainMessage();
                     message.what = MESSAGE_PROGRESS;
@@ -173,7 +186,6 @@ public class JVideoView extends FrameLayout {
 
             @Override
             public void onLoad(String path, String name) {
-                Log.e("wxj", "path:"+path + ",name:" + name);
                 if (handler != null) {
                     Message message = handler.obtainMessage();
                     message.what = MESSAGE_FILE;
@@ -191,9 +203,7 @@ public class JVideoView extends FrameLayout {
                 OkHttpProgress.startUrl((String) url,progressListener);
             }
         }).start();
-
     }
-
 
     public void setData(Object o, Object dt,int pos){
         this.url = o;
@@ -209,6 +219,7 @@ public class JVideoView extends FrameLayout {
     }
 
     private void refreshStatus() {
+        ivImage.setVisibility(View.INVISIBLE);
         jRoundProgressBar.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
         ivPlayVideo.setVisibility(View.INVISIBLE);
@@ -218,11 +229,18 @@ public class JVideoView extends FrameLayout {
         } else if(dataType.equals(DataType.LOCAL_VIDEO)){
             ivPlayVideo.setVisibility(View.VISIBLE);
             videoView.setVideoPath((String) url);
+            mediaMetadataRetriever.setDataSource((String) url);
         }else if(dataType.equals(DataType.OVER_VIDEO)){
             layoutVideoOver.setVisibility(View.VISIBLE);
         }
     }
 
+    private void setDefaultImage(int di){
+        this.defaultImage = di;
+        if (ivImage != null){
+            ivImage.setImageResource(defaultImage);
+        }
+    }
 
     public void setJGalleryClickListener(OnJGalleryClickListener listener) {
         this.onJGalleryClickListener = listener;

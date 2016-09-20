@@ -4,9 +4,9 @@ import android.content.Context;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 /**
- * @author WX_JIN
- * wangxiaojin@soubw.com
- * http://soubw.com
+ * author：WX_JIN
+ * email：wangxiaojin@soubw.com
+ * link: http://soubw.com
  */
 public class JGalleryScroller extends Scroller {
 

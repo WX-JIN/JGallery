@@ -11,7 +11,11 @@ import com.soubw.jgallery.JGallery;
 import com.soubw.jgallery.config.DataType;
 import com.soubw.jgallery.config.PageTransformer;
 import com.soubw.jgallery.listener.OnJGalleryClickListener;
-
+/**
+ * author：WX_JIN
+ * email：wangxiaojin@soubw.com
+ * link: http://soubw.com
+ */
 public class MainActivity extends AppCompatActivity {
 
     private com.soubw.jgallery.JGallery jGallery;

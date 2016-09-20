@@ -22,9 +22,9 @@ import okio.Okio;
 import okio.Source;
 
 /**
- * @author WX_JIN on 2016/9/18
- *         wangxiaojin@soubw.com
- *         http://soubw.com
+ * author：WX_JIN
+ * email：wangxiaojin@soubw.com
+ * link: http://soubw.com
  */
 public class OkHttpProgress {
 

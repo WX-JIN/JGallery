@@ -17,9 +17,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * @author WX_JIN on 2016/9/18
- *         wangxiaojin@soubw.com
- *         http://soubw.com
+ * author：WX_JIN
+ * email：wangxiaojin@soubw.com
+ * link: http://soubw.com
  */
 public class ProgressDataFetcher implements DataFetcher<InputStream> {
 

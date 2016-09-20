@@ -10,12 +10,11 @@ import okio.BufferedSource;
 import okio.ForwardingSource;
 import okio.Okio;
 import okio.Source;
-
 /**
- * @author WX_JIN
- *         wangxiaojin@soubw.com
- *         http://soubw.com
- *         use:https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/Progress.java
+ * author：WX_JIN
+ * email：wangxiaojin@soubw.com
+ * link: http://soubw.com
+ * use:https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/Progress.java
  */
 public class ProgressResponseBody extends ResponseBody {
 

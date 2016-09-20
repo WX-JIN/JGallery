@@ -28,9 +28,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author WX_JIN
- * wangxiaojin@soubw.com
- * http://soubw.com
+ * author：WX_JIN
+ * email：wangxiaojin@soubw.com
+ * link: http://soubw.com
  */
 public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListener, OnJGalleryPageSelectedListener {
 
@@ -283,6 +283,10 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         }
     }
 
+    public void setDataType(String dataType){
+
+    }
+
     public void setCurrentItem(int position) {
         setCurrentItem(jGalleryPagerAdapter.getLoopDataPos(position),true);
     }
@@ -311,9 +315,6 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
         this.onPageChangeListener = listener;
     }
-
-
-
 
     public void setData(Object[] ld) {
         setData(Arrays.asList(ld), null);
