@@ -89,9 +89,10 @@ public class JVideoView extends JView {
 
     @Override
     protected void onViewClick(View v) {
-        pauseVideo();
-        if (onJGalleryClickListener != null){
-            onJGalleryClickListener.OnClick(v,position);
+        if(!pauseVideo()){
+            if (onJGalleryClickListener != null){
+                onJGalleryClickListener.OnClick(v,position);
+            }
         }
     }
 
@@ -126,10 +127,12 @@ public class JVideoView extends JView {
         layoutOver.setVisibility(View.INVISIBLE);
         if(dataType.equals(DataType.NET_VIDEO)){
             ivPlayVideo.setVisibility(View.VISIBLE);
+            showImage();
         } else if(dataType.equals(DataType.LOCAL_VIDEO)){
             ivPlayVideo.setVisibility(View.VISIBLE);
             videoView.setVideoPath((String) url);
             mediaMetadataRetriever.setDataSource((String) url);
+            showImage();
         }else if(dataType.equals(DataType.OVER_VIDEO)){
             layoutOver.setVisibility(View.VISIBLE);
         }
@@ -137,14 +140,17 @@ public class JVideoView extends JView {
 
     @Override
     protected void showImage(){
-        if (thumbnail != null && defaultImage != -1)
+        if (thumbnail != null && defaultImage != -1){
+            ivImage.setVisibility(View.VISIBLE);
             Glide.with(context).load(thumbnail).centerCrop().crossFade().placeholder(defaultImage).into(ivImage);
-        else if (thumbnail != null)
+        }
+        else if (thumbnail != null){
+            ivImage.setVisibility(View.VISIBLE);
             Glide.with(context).load(thumbnail).centerCrop().crossFade().into(ivImage);
-
+        }
     }
 
-    public void pauseVideo(){
+    public boolean pauseVideo(){
         if (videoView.isPlaying()){
             currentPosition = videoView.getCurrentPosition();
             videoView.pause();
@@ -155,13 +161,13 @@ public class JVideoView extends JView {
                 ivImage.setVisibility(View.VISIBLE);
                 ivImage.setImageBitmap(bitmap);
             }else{
-                ivImage.setVisibility(View.VISIBLE);
                 showImage();
             }
             videoView.setVisibility(View.INVISIBLE);
             ivPlayVideo.setVisibility(View.VISIBLE);
-            return;
+            return true;
         }
+        return false;
     }
 
 }
