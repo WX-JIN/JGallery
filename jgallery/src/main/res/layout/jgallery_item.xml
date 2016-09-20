@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         android:background="@null"/>
-    <com.soubw.jvideoview.JVideoView
+    <com.soubw.view.JVideoView
         android:id="@+id/jVideoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

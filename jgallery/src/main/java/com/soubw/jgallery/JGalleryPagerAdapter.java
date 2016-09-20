@@ -12,7 +12,7 @@ import com.soubw.jgallery.listener.OnJGalleryClickListener;
 import com.soubw.jgallery.listener.OnJGalleryLoadListener;
 import com.soubw.jgallery.listener.OnJGalleryLongClickListener;
 import com.soubw.jgallery.listener.OnJGalleryPageSelectedListener;
-import com.soubw.jvideoview.JVideoView;
+import com.soubw.view.JVideoView;
 
 import java.util.List;
 
@@ -60,7 +60,7 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
                 getItemType(position).equals(DataType.LOCAL_VIDEO) ||
                 getItemType(position).equals(DataType.OVER_VIDEO)){//todo wxj
             displayType(holder, true);
-            holder.jVideoView.setData(listData.get(position),typeData.get(position),position);
+            holder.jVideoView.setData(listData.get(position),typeData.get(position),null,position);
             holder.jVideoView.setJGalleryClickListener(onJGalleryClickListener);
             holder.jVideoView.setJGalleryLongClickListener(onJGalleryLongClickListener);
             holder.jVideoView.setJGalleryLoadListener(new OnJGalleryLoadListener() {

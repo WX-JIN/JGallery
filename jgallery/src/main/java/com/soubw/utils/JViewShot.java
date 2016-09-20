@@ -77,9 +77,9 @@ public class JViewShot {
 		} catch (IOException e) { 
 			e.printStackTrace(); 
 		} finally {
-/*			if(b != null) {
+			if(b != null) {
 				b.recycle();
-			}*/
+			}
 		}
 	} 
 }

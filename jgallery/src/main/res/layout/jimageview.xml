@@ -4,10 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@null">
-    <ImageView
-        android:id="@+id/ivImage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
     <LinearLayout
         android:id="@+id/layoutOver"
         android:layout_width="match_parent"
@@ -19,23 +16,23 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/jgallery_video_over" />
+            android:src="@drawable/jgallery_image_over" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="@string/jgallery_video_over"
+            android:text="@string/jgallery_image_over"
             android:textColor="#ffffff"
             android:textSize="16sp" />
     </LinearLayout>
 
-    <VideoView
-        android:id="@+id/videoView"
+    <ImageView
+        android:id="@+id/ivImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:background="@null" />
+        android:scaleType="fitXY"
+        android:background="@null"/>
 
     <com.soubw.jroundprogressbar.JRoundProgressBar
         android:id="@+id/jRoundProgressBar"
@@ -48,17 +45,4 @@
         jgallery:JGallery_JRoundTextIsDisplayable="false"
         jgallery:JGallery_JRoundWidth="4dp" />
 
-    <ImageView
-        android:id="@+id/ivPlayVideo"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/jgallery_play_video" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="@style/Base.Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
 </RelativeLayout>

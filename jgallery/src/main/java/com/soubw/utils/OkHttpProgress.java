@@ -52,7 +52,7 @@ public class OkHttpProgress {
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-
+                    progressListener.onError(e.getMessage());
                 }
 
                 @Override
@@ -80,6 +80,7 @@ public class OkHttpProgress {
                         }
                         fos.flush();
                     } catch (Exception e) {
+                        progressListener.onError(e.getMessage());
                     } finally {
                         try {
                             if (is != null)
@@ -155,5 +156,7 @@ public class OkHttpProgress {
         void update(long bytesRead, long contentLength, boolean done);
 
         void onLoad( String path,String name);
+
+        void onError( String errorMessage);
     }
 }

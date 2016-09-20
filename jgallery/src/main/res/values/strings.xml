@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">JGallery</string>
+    <string name="jgallery_image_over">无法加载图片</string>
     <string name="jgallery_video_over">视频已过期或已被删除</string>
 </resources>

@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.soubw.jgallery.config.DataType;
 import com.soubw.jgallery.config.IndicatorGravity;
 import com.soubw.jgallery.config.IndicatorStyle;
 import com.soubw.jgallery.listener.OnJGalleryClickListener;
@@ -49,6 +50,7 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
 
 
     private int indicatorGravity = IndicatorGravity.RIGHT_BOTTOM;
+    private String dataType = DataType.NORMAL_IMAGE;
     private boolean autoPlay = true;
     private boolean autoLoop = true;
     private int defaultImage = -1;
@@ -283,8 +285,8 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         }
     }
 
-    public void setDataType(String dataType){
-
+    public void setDataType(String dt){
+        this.dataType = dt;
     }
 
     public void setCurrentItem(int position) {
