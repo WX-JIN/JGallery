@@ -118,6 +118,8 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         if (onPageChangeListener != null)
             onPageChangeListener.onPageScrolled(jGalleryPagerAdapter.getCurrentDataPos(position), positionOffset, positionOffsetPixels);
+        if (jGalleryPagerAdapter != null)
+            jGalleryPagerAdapter.onPageScrolled(position , positionOffset, positionOffsetPixels);
     }
 
     @Override

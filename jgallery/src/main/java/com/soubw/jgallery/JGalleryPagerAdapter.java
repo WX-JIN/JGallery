@@ -109,6 +109,22 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
         }
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        float offSet = (0.5f - positionOffset);
+        int p = position;
+        if (offSet < 0)
+            p = position + 1;
+        if (Math.abs(offSet) < 0.1) {
+            if (weakViewMap != null && weakViewMap.containsKey(position)) {
+                if (getItemType(p).equals(DataType.NET_VIDEO) || getItemType(p).equals(DataType.LOCAL_VIDEO)) {
+                    final JGalleryHolder holder = weakViewMap.get(p);
+                    holder.jVideoView.pauseVideo();
+                }
+            }
+        }
+    }
+
     public void displayType(JGalleryHolder holder, boolean isVideo){
         if (isVideo){
             holder.photoView.setVisibility(View.INVISIBLE);

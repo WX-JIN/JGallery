@@ -148,6 +148,7 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
     }
 
     public abstract void onPageSelected(int position);
+    public abstract void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
 
     protected View loadLayout(@LayoutRes int resource, ViewGroup  parent){
         return inflater.inflate(resource, parent, false);

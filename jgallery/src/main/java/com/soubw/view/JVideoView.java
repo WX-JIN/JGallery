@@ -89,21 +89,7 @@ public class JVideoView extends JView {
 
     @Override
     protected void onViewClick(View v) {
-        if (videoView.isPlaying()){
-            currentPosition = videoView.getCurrentPosition();
-            videoView.pause();
-            Bitmap bitmap = mediaMetadataRetriever.getFrameAtTime(currentPosition * 1000,
-                    MediaMetadataRetriever.OPTION_NEXT_SYNC);
-            if (bitmap != null) {
-                ivImage.setVisibility(View.VISIBLE);
-                ivImage.setImageBitmap(bitmap);
-            }else{
-                showImage();
-            }
-            videoView.setVisibility(View.INVISIBLE);
-            ivPlayVideo.setVisibility(View.VISIBLE);
-            return;
-        }
+        pauseVideo();
         if (onJGalleryClickListener != null){
             onJGalleryClickListener.OnClick(v,position);
         }
@@ -156,6 +142,25 @@ public class JVideoView extends JView {
         else if (thumbnail != null)
             Glide.with(context).load(thumbnail).centerCrop().crossFade().into(ivImage);
 
+    }
+
+    public void pauseVideo(){
+        if (videoView.isPlaying()){
+            currentPosition = videoView.getCurrentPosition();
+            videoView.pause();
+//            Bitmap bitmap = mediaMetadataRetriever.getFrameAtTime(currentPosition * 1000,
+//                    MediaMetadataRetriever.OPTION_NEXT_SYNC);
+            Bitmap bitmap = null;
+            if (bitmap != null) {
+                ivImage.setVisibility(View.VISIBLE);
+                ivImage.setImageBitmap(bitmap);
+            }else{
+                showImage();
+            }
+            videoView.setVisibility(View.INVISIBLE);
+            ivPlayVideo.setVisibility(View.VISIBLE);
+            return;
+        }
     }
 
 }
