@@ -53,16 +53,23 @@ public class MainActivity extends AppCompatActivity {
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/banner/3.jpg"
         };
 
-        final String[] type = new String[]{
+        final Object[] type = new Object[]{
                 DataType.NORMAL_IMAGE, DataType.NORMAL_IMAGE, DataType.NORMAL_IMAGE, DataType.NORMAL_IMAGE
         };
 
-        final String[] type1 = new String[]{
-                DataType.LOCAL_VIDEO,DataType.GIF_IMAGE, DataType.GIF_IMAGE, DataType.GIF_IMAGE, DataType.GIF_IMAGE,DataType.OVER_VIDEO, DataType.NORMAL_IMAGE, DataType.NORMAL_IMAGE, DataType.NORMAL_IMAGE
+        final Object[] type1 = new Object[]{
+                DataType.LOCAL_VIDEO,DataType.GIF_IMAGE, DataType.GIF_IMAGE, DataType.GIF_IMAGE,
+                DataType.GIF_IMAGE,DataType.OVER_VIDEO, DataType.NORMAL_IMAGE, DataType.NORMAL_IMAGE, DataType.NORMAL_IMAGE
 
         };
 
-        this.jGallery.setData(list1,type1);
+        final Object[] pre1 = new Object[]{
+                R.mipmap.ic_launcher,R.mipmap.ic_launcher, R.mipmap.ic_launcher,R.mipmap.ic_launcher, R.mipmap.ic_launcher,
+                R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher
+
+        };
+
+        this.jGallery.setData(list1,type1,pre1);
         this.jGallery.setPageTransformer(PageTransformer.Default);
         this.jGallery.setOnJGalleryClickListener(new OnJGalleryClickListener() {
             @Override

@@ -168,11 +168,12 @@ public abstract class JView extends FrameLayout {
         this.jRoundProgressBar.setProgress(progress);
     }
 
-    public void setData(Object o, Object dt,Object t, int pos){
+    public void setData(Object o, Object dt,Object t,int di, int pos){
         this.url = o;
         this.dataType = dt;
         this.thumbnail = t;
         this.position = pos;
+        this.defaultImage = di;
         refreshStatus();
     }
 

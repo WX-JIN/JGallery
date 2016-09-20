@@ -119,7 +119,7 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         if (onPageChangeListener != null)
             onPageChangeListener.onPageScrolled(jGalleryPagerAdapter.getCurrentDataPos(position), positionOffset, positionOffsetPixels);
         if (jGalleryPagerAdapter != null)
-            jGalleryPagerAdapter.onPageScrolled(position , positionOffset, positionOffsetPixels);
+            jGalleryPagerAdapter.onPageScrolled(position, positionOffset, positionOffsetPixels);
     }
 
     @Override
@@ -181,7 +181,7 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
                     if (currentPos == 0) {
                         setCurrentItem(currentPos, false);
                     } else {
-                        setCurrentItem(currentPos,true);
+                        setCurrentItem(currentPos, true);
                     }
                     handler.postDelayed(autoPlayTack, switchTime);
                 }
@@ -287,17 +287,17 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         }
     }
 
-    public void setDataType(String dt){
+    public void setDataType(String dt) {
         this.dataType = dt;
     }
 
     public void setCurrentItem(int position) {
-        setCurrentItem(jGalleryPagerAdapter.getLoopDataPos(position),true);
+        setCurrentItem(jGalleryPagerAdapter.getLoopDataPos(position), true);
     }
 
-    private void setCurrentItem(int currentItem,boolean smoothScroll) {
+    private void setCurrentItem(int currentItem, boolean smoothScroll) {
         if (!smoothScroll)
-            viewPager.setCurrentItem(currentItem,false);
+            viewPager.setCurrentItem(currentItem, false);
         else
             viewPager.setCurrentItem(currentItem);
         jGalleryPagerAdapter.notifyDataSetChanged();
@@ -321,26 +321,30 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
     }
 
     public void setData(Object[] ld) {
-        setData(Arrays.asList(ld), null);
+        setData(Arrays.asList(ld), null, null);
     }
 
     public void setData(Object[] ld, Object[] td) {
-        if (ld == null || ld == null || td.length != td.length) {
-            new RuntimeException("data or type error");
-            return;
-        }
-        setData(Arrays.asList(ld), Arrays.asList(td));
+        setData(Arrays.asList(ld), Arrays.asList(td), null);
+    }
+
+    public void setData(Object[] ld, Object[] td, Object[] pd) {
+        setData(Arrays.asList(ld), Arrays.asList(td), Arrays.asList(pd));
     }
 
     public void setData(List ld) {
-        setData(ld, null);
+        setData(ld, null, null);
     }
 
     public void setData(List ld, List td) {
-        if (ld == null || ld.size() <= 0) {
+        setData(ld, td, null);
+    }
+
+    public void setData(List ld, List td, List pd) {
+        if (ld == null || ld.size() <= 0 || jGalleryPagerAdapter == null) {
             return;
         }
-        jGalleryPagerAdapter.addRefreshData(ld, td);
+        jGalleryPagerAdapter.addRefreshData(ld, td, pd);
         setCurrentItem(jGalleryPagerAdapter.getLoopDataPos(0), true);
     }
 
@@ -352,15 +356,23 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         addBeforeData(Arrays.asList(ld), Arrays.asList(td));
     }
 
-    public void addBeforeData(List ld) {
-        addBeforeData(ld, null);
+    public void addBeforeData(Object[] ld, Object[] td, Object[] pd) {
+        addBeforeData(Arrays.asList(ld), Arrays.asList(td), Arrays.asList(pd));
     }
 
-    public void addBeforeData(List data, List td) {
-        if (data == null || data.size() <= 0 || jGalleryPagerAdapter == null)
+    public void addBeforeData(List ld) {
+        addBeforeData(ld, null, null);
+    }
+
+    public void addBeforeData(List ld, List td) {
+        addBeforeData(ld, td, null);
+    }
+
+    public void addBeforeData(List ld, List td, List pd) {
+        if (ld == null || ld.size() <= 0 || jGalleryPagerAdapter == null)
             return;
-        jGalleryPagerAdapter.addBeforeData(data, td);
-        setCurrentItem(autoLoop? currentPos+data.size()-1:currentPos+data.size());
+        jGalleryPagerAdapter.addBeforeData(ld, td, pd);
+        setCurrentItem(autoLoop ? currentPos + ld.size() - 1 : currentPos + ld.size());
     }
 
     public void addMoreData(Object[] ld) {
@@ -371,14 +383,22 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         addMoreData(Arrays.asList(ld), Arrays.asList(td));
     }
 
-    public void addMoreData(List ld) {
-        addMoreData(ld, null);
+    public void addMoreData(Object[] ld, Object[] td, Object[] pd) {
+        addMoreData(Arrays.asList(ld), Arrays.asList(td), Arrays.asList(pd));
     }
 
-    public void addMoreData(List data, List td) {
-        if (data == null || data.size() <= 0 || jGalleryPagerAdapter == null)
+    public void addMoreData(List ld) {
+        addMoreData(ld, null, null);
+    }
+
+    public void addMoreData(List ld, List td) {
+        addMoreData(ld, td, null);
+    }
+
+    public void addMoreData(List ld, List td, List pd) {
+        if (ld == null || ld.size() <= 0 || jGalleryPagerAdapter == null)
             return;
-        jGalleryPagerAdapter.addMoreData(data, td);
+        jGalleryPagerAdapter.addMoreData(ld, td, pd);
         jGalleryPagerAdapter.onPageSelected(currentPos);
     }
 

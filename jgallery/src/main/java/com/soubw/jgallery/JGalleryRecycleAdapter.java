@@ -24,6 +24,7 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
     private final LayoutInflater inflater;
     protected List listData;
     protected List typeData;
+    protected List preData;
 
     protected WeakHashMap<Integer, VH> weakViewMap = new WeakHashMap<>();
     private boolean isFirstView = true;
@@ -31,13 +32,19 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
 
     public JGalleryRecycleAdapter(Context cx, List<?> ld) {
         this.context = cx;
-        addRefreshData(ld,null);
+        addRefreshData(ld,null,null);
         inflater = LayoutInflater.from(cx);
     }
 
     public JGalleryRecycleAdapter(Context cx, List<?> ld,List<?> td) {
         this.context = cx;
-        addRefreshData(ld,td);
+        addRefreshData(ld,td,null);
+        inflater = LayoutInflater.from(cx);
+    }
+
+    public JGalleryRecycleAdapter(Context cx, List<?> ld,List<?> td,List<?> pd) {
+        this.context = cx;
+        addRefreshData(ld,td,pd);
         inflater = LayoutInflater.from(cx);
     }
 
@@ -58,7 +65,7 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
         return holder.view;
     }
 
-    public void addRefreshData(List ld,List td) {
+    public void addRefreshData(List ld,List td,List pd) {
         if (ld == null || ld.isEmpty())
             return;
         if (listData != null){
@@ -71,10 +78,16 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
             }
             loopTypeData(td,false,false);
         }
+        if (pd != null && !pd.isEmpty()){
+            if (preData != null){
+                preData.clear();
+            }
+            loopPreData(pd,false,false);
+        }
         notifyDataSetChanged();
     }
 
-    public void addMoreData(List ld,List td) {
+    public void addMoreData(List ld,List td,List pd) {
         if (ld == null || ld.isEmpty()  || listData == null)
             return;
         if (listData.size() > 0){
@@ -97,10 +110,21 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
                 loopTypeData(td,false,false);
             }
         }
+        if (pd != null && !pd.isEmpty()){
+            if (preData.size() > 0){
+                if (autoLoop){
+                    loopPreData(pd,true,false);
+                }else {
+                    loopPreData(pd,false,false);
+                }
+            }else{
+                loopPreData(pd,false,false);
+            }
+        }
         notifyDataSetChanged();
     }
 
-    public void addBeforeData(List ld,List td) {
+    public void addBeforeData(List ld,List td,List pd) {
         if (ld == null || ld.isEmpty() || listData == null)
             return;
         if (listData.size() > 0){
@@ -121,6 +145,17 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
                 }
             }else{
                 loopTypeData(td,false,false);
+            }
+        }
+        if (pd != null && !pd.isEmpty()){
+            if (preData.size() > 0){
+                if (autoLoop){
+                    loopPreData(pd,true,true);
+                }else {
+                    loopPreData(pd,false,true);
+                }
+            }else{
+                loopPreData(pd,false,false);
             }
         }
         notifyDataSetChanged();
@@ -145,6 +180,12 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
         if (typeData == null || typeData.isEmpty() || position >= typeData.size() )
            return DataType.NORMAL_IMAGE;
         return typeData.get(position);
+    }
+
+    protected Object getItemPreImage(int position){
+        if (preData == null || preData.isEmpty() || position >= preData.size() )
+            return null;
+        return preData.get(position);
     }
 
     public abstract void onPageSelected(int position);
@@ -203,6 +244,30 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
         if (temp.size() > 1  && autoLoop){
             typeData.add(0,temp.get(temp.size()-1));
             typeData.add(typeData.size(),temp.get(0));
+        }
+    }
+
+    private void loopPreData(List<?> pd,boolean isClear,boolean isStart){
+        List temp = new ArrayList();
+        if (preData == null){
+            preData = new ArrayList<>();
+        }
+        if (isClear){
+            preData.remove(0);
+            preData.remove(preData.size()-1);
+        }
+        if (isStart){
+            temp.addAll(pd);
+            temp.addAll(preData);
+        }else{
+            temp.addAll(preData);
+            temp.addAll(pd);
+        }
+        preData.clear();
+        preData.addAll(temp);
+        if (temp.size() > 1  && autoLoop){
+            preData.add(0,temp.get(temp.size()-1));
+            preData.add(preData.size(),temp.get(0));
         }
     }
 

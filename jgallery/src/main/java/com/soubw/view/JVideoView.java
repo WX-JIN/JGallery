@@ -155,6 +155,7 @@ public class JVideoView extends JView {
                 ivImage.setVisibility(View.VISIBLE);
                 ivImage.setImageBitmap(bitmap);
             }else{
+                ivImage.setVisibility(View.VISIBLE);
                 showImage();
             }
             videoView.setVisibility(View.INVISIBLE);

@@ -37,6 +37,10 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
         super(cx, ld, td);
     }
 
+    public JGalleryPagerAdapter(Context cx, List ld,List td,List pd) {
+        super(cx, ld, td,pd);
+    }
+
     @Override
     public JGalleryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new JGalleryHolder(loadLayout(R.layout.jgallery_item,parent));
@@ -60,7 +64,7 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
                 getItemType(position).equals(DataType.LOCAL_VIDEO) ||
                 getItemType(position).equals(DataType.OVER_VIDEO)){//todo wxj
             displayType(holder, true);
-            holder.jVideoView.setData(listData.get(position),typeData.get(position),null,position);
+            holder.jVideoView.setData(listData.get(position),typeData.get(position),getItemPreImage(position),defaultImage,position);
             holder.jVideoView.setJGalleryClickListener(onJGalleryClickListener);
             holder.jVideoView.setJGalleryLongClickListener(onJGalleryLongClickListener);
             holder.jVideoView.setJGalleryLoadListener(new OnJGalleryLoadListener() {
