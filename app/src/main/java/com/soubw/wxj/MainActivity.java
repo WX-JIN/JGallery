@@ -11,6 +11,7 @@ import com.soubw.jgallery.JGallery;
 import com.soubw.jgallery.config.DataType;
 import com.soubw.jgallery.config.PageTransformer;
 import com.soubw.jgallery.listener.OnJGalleryClickListener;
+
 /**
  * author：WX_JIN
  * email：wangxiaojin@soubw.com
@@ -80,8 +81,9 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-              //jGallery.addBeforeData(list1,type1);
+              jGallery.addBeforeData(list,type);
             }
-        },1000);
+        },3000);
+
     }
 }

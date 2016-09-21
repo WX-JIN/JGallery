@@ -320,31 +320,30 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         this.onPageChangeListener = listener;
     }
 
-    public void setData(Object[] ld) {
-        setData(Arrays.asList(ld), null, null);
-    }
-
-    public void setData(Object[] ld, Object[] td) {
-        setData(Arrays.asList(ld), Arrays.asList(td), null);
-    }
-
-    public void setData(Object[] ld, Object[] td, Object[] pd) {
-        setData(Arrays.asList(ld), Arrays.asList(td), Arrays.asList(pd));
-    }
-
-    public void setData(List ld) {
-        setData(ld, null, null);
-    }
-
-    public void setData(List ld, List td) {
-        setData(ld, td, null);
-    }
-
-    public void setData(List ld, List td, List pd) {
-        if (ld == null || ld.size() <= 0 || jGalleryPagerAdapter == null) {
-            return;
+    public void setData(Object[]... objects) {
+        Object[] object0 = null,object1 = null,object2 = null;
+        for (int i = 0; i < objects.length; i++) {
+            if (i == 0) object0 = objects[0];
+            if (i == 0) object1 = objects[1];
+            if (i == 2){
+                object2 = objects[2];
+                break;
+            }
         }
-        jGalleryPagerAdapter.addRefreshData(ld, td, pd);
+        setData(object0 !=null? Arrays.asList(object0):null,object1 !=null? Arrays.asList(object1):null,object2 !=null? Arrays.asList(object2):null);
+    }
+
+    public void setData(List... lists) {
+        List list0 = null,list1 = null,list2 = null;
+        for (int i = 0; i < lists.length; i++) {
+            if (i == 0) list0 = lists[0];
+            if (i == 0) list1 = lists[1];
+            if (i == 2){
+                list2 = lists[2];
+                break;
+            }
+        }
+        jGalleryPagerAdapter.addRefreshData(list0, list1, list2);
         setCurrentItem(jGalleryPagerAdapter.getLoopDataPos(0), true);
     }
 
