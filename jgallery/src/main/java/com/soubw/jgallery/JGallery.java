@@ -51,8 +51,8 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
 
     private int indicatorGravity = IndicatorGravity.RIGHT_BOTTOM;
     private String dataType = DataType.NORMAL_IMAGE;
-    private boolean autoPlay = true;
-    private boolean autoLoop = true;
+    private boolean autoPlay = false;
+    private boolean autoLoop = false;
     private int defaultImage = -1;
     private int switchTime = 3000;
     private int currentPos = 0;
@@ -324,11 +324,8 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         Object[] object0 = null,object1 = null,object2 = null;
         for (int i = 0; i < objects.length; i++) {
             if (i == 0) object0 = objects[0];
-            if (i == 0) object1 = objects[1];
-            if (i == 2){
-                object2 = objects[2];
-                break;
-            }
+            if (i == 1) object1 = objects[1];
+            if (i == 2) object2 = objects[2];
         }
         setData(object0 !=null? Arrays.asList(object0):null,object1 !=null? Arrays.asList(object1):null,object2 !=null? Arrays.asList(object2):null);
     }
@@ -337,11 +334,8 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         List list0 = null,list1 = null,list2 = null;
         for (int i = 0; i < lists.length; i++) {
             if (i == 0) list0 = lists[0];
-            if (i == 0) list1 = lists[1];
-            if (i == 2){
-                list2 = lists[2];
-                break;
-            }
+            if (i == 1) list1 = lists[1];
+            if (i == 2) list2 = lists[2];
         }
         jGalleryPagerAdapter.addRefreshData(list0, list1, list2);
         setCurrentItem(jGalleryPagerAdapter.getLoopDataPos(0), true);

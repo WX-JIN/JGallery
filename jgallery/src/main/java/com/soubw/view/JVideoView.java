@@ -114,6 +114,12 @@ public class JVideoView extends JView {
     }
 
     @Override
+    protected void loadError(String error) {
+        dataType = DataType.OVER_VIDEO;
+        refreshStatus();
+    }
+
+    @Override
     protected void preDownLoad() {
         ivPlayVideo.setVisibility(View.INVISIBLE);
     }

@@ -3,6 +3,7 @@ package com.soubw.view;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -129,7 +130,7 @@ public abstract class JView extends FrameLayout {
         }).start();
     }
 
-    protected Handler handler = new Handler(){
+    protected Handler handler = new Handler(Looper.getMainLooper()){
 
         @Override
         public void handleMessage(Message msg) {
@@ -145,8 +146,7 @@ public abstract class JView extends FrameLayout {
                     break;
                 case MESSAGE_ERROR:
                     bundle= msg.getData();
-                    bundle.getString("error");
-                    refreshStatus();
+                    loadError(bundle.getString("error"));
                     break;
                 default:
                     break;
@@ -158,6 +158,7 @@ public abstract class JView extends FrameLayout {
     protected abstract void onViewClick(View v);
     protected abstract void onViewLongClick(View v);
     protected abstract void jFile(String path, String name);
+    protected abstract void loadError(String error);
     protected abstract void preDownLoad();
     protected abstract void refreshStatus();
     protected abstract void showImage();

@@ -51,6 +51,11 @@ public class JImageView extends JView {
 
     }
 
+    @Override
+    protected void loadError(String error) {
+
+    }
+
 
     @Override
     protected void preDownLoad() {
