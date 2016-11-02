@@ -14,6 +14,7 @@ import android.widget.VideoView;
 import com.bumptech.glide.Glide;
 import com.soubw.jgallery.R;
 import com.soubw.jgallery.config.DataType;
+import com.soubw.utils.JFile;
 
 /**
  * author：WX_JIN
@@ -27,6 +28,7 @@ public class JVideoView extends JView {
     private ProgressBar progressBar;
 
     private int currentPosition = -1;
+    private boolean isCurrentSelected = false;
     private MediaMetadataRetriever mediaMetadataRetriever;
 
     public JVideoView(Context context) {
@@ -48,20 +50,7 @@ public class JVideoView extends JView {
         this.ivPlayVideo.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dataType.equals(DataType.LOCAL_VIDEO)){
-                    ivImage.setVisibility(View.INVISIBLE);
-                    videoView.setVisibility(View.VISIBLE);
-                    if (currentPosition != -1){
-                        videoView.seekTo(currentPosition);
-                    }
-                    videoView.start();
-                    if (!videoView.isPlaying()){
-                        progressBar.setVisibility(View.VISIBLE);
-                    }
-                    ivPlayVideo.setVisibility(View.INVISIBLE);
-                } else if(dataType.equals(DataType.NET_VIDEO)){
-                    downLoad();
-                }
+                startVideo();
             }
         });
         this.videoView = (VideoView) view.findViewById(R.id.videoView);
@@ -104,12 +93,15 @@ public class JVideoView extends JView {
     }
 
     @Override
-    protected void jFile(String path, String name) {
+    protected void loadFileSuccess(String path, String name) {
         dataType = DataType.LOCAL_VIDEO;
         url = path;
         refreshStatus();
         if(onJGalleryLoadListener !=null){
             onJGalleryLoadListener.onLoad(position,path, name);
+        }
+        if (isCurrentSelected){
+            startVideo();
         }
     }
 
@@ -135,6 +127,11 @@ public class JVideoView extends JView {
             ivPlayVideo.setVisibility(View.VISIBLE);
             showImage();
         } else if(dataType.equals(DataType.LOCAL_VIDEO)){
+            if (!JFile.fileIsExist((String) url)){
+                dataType = DataType.OVER_VIDEO;
+                refreshStatus();
+                return;
+            }
             ivPlayVideo.setVisibility(View.VISIBLE);
             videoView.setVideoPath((String) url);
             mediaMetadataRetriever.setDataSource((String) url);
@@ -156,7 +153,29 @@ public class JVideoView extends JView {
         }
     }
 
+    public void startVideo(){
+        isCurrentSelected = true;
+        if (ivImage.getVisibility() == View.INVISIBLE){
+            return;
+        }
+        if (dataType.equals(DataType.LOCAL_VIDEO)){
+            ivImage.setVisibility(View.INVISIBLE);
+            videoView.setVisibility(View.VISIBLE);
+            if (currentPosition != -1){
+                videoView.seekTo(currentPosition);
+            }
+            videoView.start();
+            if (!videoView.isPlaying()){
+                progressBar.setVisibility(View.VISIBLE);
+            }
+            ivPlayVideo.setVisibility(View.INVISIBLE);
+        } else if(dataType.equals(DataType.NET_VIDEO)){
+            downLoad();
+        }
+    }
+
     public boolean pauseVideo(){
+        isCurrentSelected = false;
         if (videoView.isPlaying()){
             currentPosition = videoView.getCurrentPosition();
             videoView.pause();

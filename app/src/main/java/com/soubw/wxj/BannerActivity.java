@@ -33,21 +33,22 @@ public class BannerActivity extends FragmentActivity {
 //        list.add("http://7xllxs.com1.z0.glb.clouddn.com/common/pic/banner/4.jpg");
 
 
-        final String[] list = new String[]{"http://img2.ph.126.net/S5yjVLz4t7k7fTl0D7hPLw==/6630852261420005987.jpg",
+        final String[] list = new String[]{
+                "http://img2.ph.126.net/S5yjVLz4t7k7fTl0D7hPLw==/6630852261420005987.jpg",
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/banner/2.jpg",
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/banner/3.jpg",
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/banner/4.jpg"
         };
 
         final String[] list1 = new String[]{
-                Environment.getExternalStorageDirectory().getPath()+"/test.gif",
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/gif/list/1.gif",
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/gif/list/2.gif",
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/gif/list/3.gif",
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/gif/list/4.gif",
-                Environment.getExternalStorageDirectory().getPath()+"/wxj/b123.mp4"
+                "http://7xllxs.com1.z0.glb.clouddn.com/common/video/mp4/1.mp4"
                 ,"http://7xllxs.com1.z0.glb.clouddn.com/common/pic/banner/1.jpg",
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/banner/2.jpg",
+                Environment.getExternalStorageDirectory().getPath()+"/test",
                 "http://7xllxs.com1.z0.glb.clouddn.com/common/pic/banner/3.jpg"
         };
 
@@ -55,9 +56,13 @@ public class BannerActivity extends FragmentActivity {
                 DataType.NORMAL_IMAGE, DataType.NORMAL_IMAGE, DataType.NORMAL_IMAGE, DataType.NORMAL_IMAGE
         };
 
+        final Object[] pre = new Object[]{
+                R.mipmap.ic_launcher,R.mipmap.ic_launcher, R.mipmap.ic_launcher,R.mipmap.ic_launcher
+        };
+
         final Object[] type1 = new Object[]{
-                DataType.LOCAL_VIDEO,DataType.GIF_IMAGE, DataType.GIF_IMAGE, DataType.GIF_IMAGE,
-                DataType.GIF_IMAGE,DataType.OVER_VIDEO, DataType.NORMAL_IMAGE, DataType.NORMAL_IMAGE, DataType.NORMAL_IMAGE
+                DataType.GIF_IMAGE, DataType.GIF_IMAGE, DataType.GIF_IMAGE,
+                DataType.GIF_IMAGE,DataType.NET_VIDEO, DataType.NORMAL_IMAGE, DataType.NORMAL_IMAGE, DataType.LOCAL_VIDEO,DataType.NORMAL_IMAGE
 
         };
 
@@ -82,7 +87,7 @@ public class BannerActivity extends FragmentActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                jGallery.addBeforeData(list,type);
+                jGallery.addBeforeData(list,type,pre);
             }
         },3000);
 

@@ -23,6 +23,7 @@ import com.soubw.jgallery.listener.OnJGalleryClickListener;
 import com.soubw.jgallery.listener.OnJGalleryLoadListener;
 import com.soubw.jgallery.listener.OnJGalleryLongClickListener;
 import com.soubw.jgallery.listener.OnJGalleryPageSelectedListener;
+import com.soubw.utils.JFile;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -68,6 +69,7 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
 
     public JGallery(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        JFile.initDirectory(context);
         initView(context);
         initAttributeSet(context, attrs);
     }
@@ -341,57 +343,45 @@ public class JGallery extends FrameLayout implements ViewPager.OnPageChangeListe
         setCurrentItem(jGalleryPagerAdapter.getLoopDataPos(0), true);
     }
 
-    public void addBeforeData(Object[] ld) {
-        addBeforeData(Arrays.asList(ld), null);
+    public void addBeforeData(Object[]... objects) {
+        Object[] object0 = null,object1 = null,object2 = null;
+        for (int i = 0; i < objects.length; i++) {
+            if (i == 0) object0 = objects[0];
+            if (i == 1) object1 = objects[1];
+            if (i == 2) object2 = objects[2];
+        }
+        addBeforeData(object0 !=null? Arrays.asList(object0):null,object1 !=null? Arrays.asList(object1):null,object2 !=null? Arrays.asList(object2):null);
     }
 
-    public void addBeforeData(Object[] ld, Object[] td) {
-        addBeforeData(Arrays.asList(ld), Arrays.asList(td));
+    public void addBeforeData(List... lists) {
+        List list0 = null,list1 = null,list2 = null;
+        for (int i = 0; i < lists.length; i++) {
+            if (i == 0) list0 = lists[0];
+            if (i == 1) list1 = lists[1];
+            if (i == 2) list2 = lists[2];
+        }
+        jGalleryPagerAdapter.addBeforeData(list0, list1, list2);
+        setCurrentItem(autoLoop ? currentPos + list0.size() - 1 : currentPos + list0.size());
     }
 
-    public void addBeforeData(Object[] ld, Object[] td, Object[] pd) {
-        addBeforeData(Arrays.asList(ld), Arrays.asList(td), Arrays.asList(pd));
+    public void addMoreData(Object[]... objects) {
+        Object[] object0 = null,object1 = null,object2 = null;
+        for (int i = 0; i < objects.length; i++) {
+            if (i == 0) object0 = objects[0];
+            if (i == 1) object1 = objects[1];
+            if (i == 2) object2 = objects[2];
+        }
+        addMoreData(object0 !=null? Arrays.asList(object0):null,object1 !=null? Arrays.asList(object1):null,object2 !=null? Arrays.asList(object2):null);
     }
 
-    public void addBeforeData(List ld) {
-        addBeforeData(ld, null, null);
-    }
-
-    public void addBeforeData(List ld, List td) {
-        addBeforeData(ld, td, null);
-    }
-
-    public void addBeforeData(List ld, List td, List pd) {
-        if (ld == null || ld.size() <= 0 || jGalleryPagerAdapter == null)
-            return;
-        jGalleryPagerAdapter.addBeforeData(ld, td, pd);
-        setCurrentItem(autoLoop ? currentPos + ld.size() - 1 : currentPos + ld.size());
-    }
-
-    public void addMoreData(Object[] ld) {
-        addMoreData(Arrays.asList(ld), null);
-    }
-
-    public void addMoreData(Object[] ld, Object[] td) {
-        addMoreData(Arrays.asList(ld), Arrays.asList(td));
-    }
-
-    public void addMoreData(Object[] ld, Object[] td, Object[] pd) {
-        addMoreData(Arrays.asList(ld), Arrays.asList(td), Arrays.asList(pd));
-    }
-
-    public void addMoreData(List ld) {
-        addMoreData(ld, null, null);
-    }
-
-    public void addMoreData(List ld, List td) {
-        addMoreData(ld, td, null);
-    }
-
-    public void addMoreData(List ld, List td, List pd) {
-        if (ld == null || ld.size() <= 0 || jGalleryPagerAdapter == null)
-            return;
-        jGalleryPagerAdapter.addMoreData(ld, td, pd);
+    public void addMoreData(List... lists) {
+        List list0 = null,list1 = null,list2 = null;
+        for (int i = 0; i < lists.length; i++) {
+            if (i == 0) list0 = lists[0];
+            if (i == 1) list1 = lists[1];
+            if (i == 2) list2 = lists[2];
+        }
+        jGalleryPagerAdapter.addMoreData(list0, list1, list2);
         jGalleryPagerAdapter.onPageSelected(currentPos);
     }
 

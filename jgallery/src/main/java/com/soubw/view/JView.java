@@ -12,13 +12,19 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.soubw.cache.ACache;
 import com.soubw.jgallery.R;
 import com.soubw.jgallery.config.DataType;
 import com.soubw.jgallery.listener.OnJGalleryClickListener;
 import com.soubw.jgallery.listener.OnJGalleryLoadListener;
 import com.soubw.jgallery.listener.OnJGalleryLongClickListener;
 import com.soubw.jroundprogressbar.JRoundProgressBar;
+import com.soubw.utils.JFile;
+import com.soubw.utils.JMD5;
 import com.soubw.utils.OkHttpProgress;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * author：WX_JIN
@@ -44,6 +50,8 @@ public abstract class JView extends FrameLayout {
     protected int position;
     protected Context context;
     protected int defaultImage = -1;
+    private ExecutorService executorService = Executors.newFixedThreadPool(5);
+    protected ACache aCache;
 
     public JView(Context context) {
         this(context, null);
@@ -57,6 +65,7 @@ public abstract class JView extends FrameLayout {
         super(context, attrs, defStyleAttr);
         this.context = context;
         initView();
+        aCache = ACache.get(JFile.getCacheFile());
     }
 
     private void initView() {
@@ -122,12 +131,18 @@ public abstract class JView extends FrameLayout {
                 }
             }
         };
-        new Thread(new Runnable() {
+        final String fileName = JMD5.MD5((String) url);
+        if (aCache.getAsString(fileName)!= null ){
+            loadFileSuccess(aCache.getAsString(fileName), fileName);
+            return;
+        }
+         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                OkHttpProgress.startUrl((String) url,progressListener);
+                OkHttpProgress.startUrl((String) url,fileName,progressListener);
             }
-        }).start();
+        });
+
     }
 
     protected Handler handler = new Handler(Looper.getMainLooper()){
@@ -142,7 +157,8 @@ public abstract class JView extends FrameLayout {
                     break;
                 case MESSAGE_FILE:
                     bundle= msg.getData();
-                    jFile(bundle.getString("path"), bundle.getString("name"));
+                    aCache.put(bundle.getString("name"),bundle.getString("path"));
+                    loadFileSuccess(bundle.getString("path"), bundle.getString("name"));
                     break;
                 case MESSAGE_ERROR:
                     bundle= msg.getData();
@@ -157,7 +173,7 @@ public abstract class JView extends FrameLayout {
     protected abstract void loadView(View v);
     protected abstract void onViewClick(View v);
     protected abstract void onViewLongClick(View v);
-    protected abstract void jFile(String path, String name);
+    protected abstract void loadFileSuccess(String path, String name);
     protected abstract void loadError(String error);
     protected abstract void preDownLoad();
     protected abstract void refreshStatus();

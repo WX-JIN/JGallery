@@ -47,7 +47,7 @@ public class JImageView extends JView {
     }
 
     @Override
-    protected void jFile(String path, String name) {
+    protected void loadFileSuccess(String path, String name) {
 
     }
 

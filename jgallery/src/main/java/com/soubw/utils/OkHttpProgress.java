@@ -1,7 +1,5 @@
 package com.soubw.utils;
 
-import android.os.Environment;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,7 +26,7 @@ import okio.Source;
  */
 public class OkHttpProgress {
 
-    public static void startUrl(String url,final ProgressListener progressListener) {
+    public static void startUrl(String url, final String fileName, final ProgressListener progressListener) {
 
         Request request = new Request.Builder()
                 .url(url)
@@ -48,7 +46,6 @@ public class OkHttpProgress {
                 .build();
 
         try {
-
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -61,22 +58,20 @@ public class OkHttpProgress {
                     byte[] buf = new byte[2048];
                     int len = 0;
                     FileOutputStream fos = null;
-                    String SDPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                     try {
                         is = response.body().byteStream();
                         long total = response.body().contentLength();
-                        String name = "test.gif";
-                        File file = new File(SDPath,name );
+                        File file = new File(JFile.getDownPath(), fileName);
                         fos = new FileOutputStream(file);
                         long sum = 0;
                         while ((len = is.read(buf)) != -1) {
                             fos.write(buf, 0, len);
                             sum += len;
-                            progressListener.update(sum,total,false);
+                            progressListener.update(sum, total, false);
                         }
-                        if (sum == total){
-                            progressListener.update(sum,total,true);
-                            progressListener.onLoad(file.getPath(),name);
+                        if (sum == total) {
+                            progressListener.update(sum, total, true);
+                            progressListener.onLoad(file.getPath(), fileName);
                         }
                         fos.flush();
                     } catch (Exception e) {
@@ -100,7 +95,7 @@ public class OkHttpProgress {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
             System.out.println(response.body().string());*/
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.print(e.getMessage());
         }
 
@@ -155,8 +150,8 @@ public class OkHttpProgress {
     public interface ProgressListener {
         void update(long bytesRead, long contentLength, boolean done);
 
-        void onLoad( String path,String name);
+        void onLoad(String path, String name);
 
-        void onError( String errorMessage);
+        void onError(String errorMessage);
     }
 }

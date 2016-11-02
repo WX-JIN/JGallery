@@ -64,7 +64,7 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
                 getItemType(position).equals(DataType.LOCAL_VIDEO) ||
                 getItemType(position).equals(DataType.OVER_VIDEO)){//todo wxj
             displayType(holder, true);
-            holder.jVideoView.setData(listData.get(position),typeData.get(position),getItemPreImage(position),defaultImage,position);
+            holder.jVideoView.setData(listData.get(position),getItemType(position),getItemPreImage(position),defaultImage,position);
             holder.jVideoView.setJGalleryClickListener(onJGalleryClickListener);
             holder.jVideoView.setJGalleryLongClickListener(onJGalleryLongClickListener);
             holder.jVideoView.setJGalleryLoadListener(new OnJGalleryLoadListener() {
@@ -103,13 +103,12 @@ public class JGalleryPagerAdapter extends JGalleryRecycleAdapter<JGalleryPagerAd
                         return false;
                     }
                 });
-            }else if(getItemType(position).equals(DataType.NET_VIDEO)
-                    ||getItemType(position).equals(DataType.LOCAL_VIDEO)||
-                    getItemType(position).equals(DataType.OVER_VIDEO)){//todo wxj
+            }else if(getItemType(position).equals(DataType.NET_VIDEO) || getItemType(position).equals(DataType.LOCAL_VIDEO)){
                 displayType(holder, true);
-
+                holder.jVideoView.startVideo();
+            }else if(getItemType(position).equals(DataType.OVER_VIDEO)){//todo wxj
+                displayType(holder, true);
             }
-
         }
     }
 

@@ -23,8 +23,8 @@ public abstract class JGalleryRecycleAdapter<VH extends JGalleryRecycleAdapter.V
     protected Context context;
     private final LayoutInflater inflater;
     protected List listData;
-    protected List typeData;
-    protected List preData;
+    private List typeData;
+    private List preData;
 
     protected WeakHashMap<Integer, VH> weakViewMap = new WeakHashMap<>();
     private boolean isFirstView = true;
