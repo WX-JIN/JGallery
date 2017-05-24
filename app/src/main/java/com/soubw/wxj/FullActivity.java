@@ -26,9 +26,11 @@ public class FullActivity extends FragmentActivity {
         List list = new ArrayList();
         list.add("http://img.hb.aicdn.com/2f9f2dbb8e4a3c5356d1a68d028200dafba6999c11ed5-y06Nn9_fw658");
         list.add("http://img2.ph.126.net/W_ARfKat8Kd980IaCadAfA==/6630180459815284013.jpg");
+        list.add("https://file.tapd.cn/20091511/attachments/bug_download/1120091511001021524/bug");
         list.add("http://img0.ph.126.net/KYhtqy2CjGE7PPqwsa4UjQ==/6630928127722322679.jpg");
         list.add("http://img.hb.aicdn.com/f95cd52b24c3cd5718900a8661e7d753ce44b37e179504-6TO3FP_fw658");
         list.add("http://ww2.sinaimg.cn/mw690/92077a4bgw1f5q72gjc6wj20qo140n7v.jpg");
+        list.add("hhttp://7xpb9x.com1.z0.glb.clouddn.com/2017/01/20/b578e4755a32ac56a9c4b9a1f7e2822d.jpg");
         list.add("http://img.hb.aicdn.com/ea8ee7955be7e1ff706a4b72bb1c22012f2356461666d-yPnDC6_fw658");
 
 

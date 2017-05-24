@@ -4,12 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@null">
-    <ImageView
+    <com.soubw.view.LargeImageView
         android:id="@+id/photoView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:background="@null"/>
+        android:layout_height="match_parent" />
     <com.soubw.view.JVideoView
         android:id="@+id/jVideoView"
         android:layout_width="match_parent"
