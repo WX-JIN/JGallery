@@ -17,6 +17,4 @@ Android 广告（banner）图片轮播、图片浏览、仿微信大图查看控
 
 
 ----------
-欢迎关注我的博客：
-http://blog.csdn.net/wx_jin
-http://soubw.com
+各位之前先使用compile 'com.soubw:jgallery:1.0.2’，第二版重构中
